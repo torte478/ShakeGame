@@ -1,6 +1,7 @@
 ﻿using System;
+using UnityEditorInternal;
 
-namespace Library
+namespace Utils
 {
     internal static class FuncExtensions
     {

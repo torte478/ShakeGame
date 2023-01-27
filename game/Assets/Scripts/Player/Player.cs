@@ -18,7 +18,10 @@ namespace Player
 
         void Update()
         {
-            _gunComponent.TryShot();
+            var state = _gunComponent.TryShot();
+            
+            if (state.Type != ShotResultType.None)
+                Debug.Log(state.Point);
         }
     }
 }
