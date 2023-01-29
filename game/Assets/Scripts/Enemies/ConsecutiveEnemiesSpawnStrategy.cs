@@ -23,7 +23,7 @@ namespace Shake.Enemies
 
             Spawn(enemy.Value);
         }
-        
+
         private static Maybe<Enemy> GetEnemyToSpawn(IReadOnlyCollection<Enemy> enemies)
         {
             foreach (var enemy in enemies)

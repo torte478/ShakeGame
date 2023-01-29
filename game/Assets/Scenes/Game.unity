@@ -454,8 +454,8 @@ MonoBehaviour:
   prefab: {fileID: 8443288720697862763, guid: 9e46bd5616dc38d488ea420cd250bf97, type: 3}
   zones: {fileID: 2083458222}
   count: 3
-  speed: 800
-  spawnType: 1
+  speed: 1200
+  spawnType: 0
 --- !u!4 &1655506522
 Transform:
   m_ObjectHideFlags: 0

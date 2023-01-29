@@ -48,7 +48,15 @@ namespace Shake.Enemies
             if (_state != State.Spawn)
                 return;
             
-            _spawn.Spawn(_enemies);
+            if (IsSpawnComplete())
+                _state = State.Ready;
+            else
+                _spawn.Spawn(_enemies);
         }
+
+        // TODO: to callback?
+        private bool IsSpawnComplete()
+            => _enemies.All(_ => _.EnemyState != Enemy.State.Start 
+                                 && _.EnemyState != Enemy.State.Spawn);
     }
 }

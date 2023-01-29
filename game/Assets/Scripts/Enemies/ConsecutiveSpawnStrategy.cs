@@ -25,6 +25,7 @@ namespace Shake.Enemies
             
             transform
                 .DOMove(_to, duration)
+                .SetEase(Ease.Linear)
                 .OnComplete(callback);
         }
     }
