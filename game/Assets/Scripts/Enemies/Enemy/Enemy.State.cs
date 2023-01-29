@@ -1,4 +1,4 @@
-﻿namespace Shake.Enemies
+﻿namespace Shake.Enemies.Enemy
 {
     internal sealed partial class Enemy
     {

@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Shake.Enemies
+namespace Shake.Enemies.Enemy
 {
     internal sealed class ConsecutiveSpawnStrategy : ISpawnStrategy
     {

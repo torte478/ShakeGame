@@ -7,7 +7,7 @@ namespace Shake.Enemies
 {
     internal sealed partial class Enemies : MonoBehaviour
     {
-        private Enemy[] _enemies;
+        private Enemy.Enemy[] _enemies;
         private State _state = State.Spawn;
         private IEnemiesSpawnStrategy _spawn;
 
@@ -32,7 +32,7 @@ namespace Shake.Enemies
                        .Range(0, count)
                        .Select(
                            _ => Instantiate(prefab, zones.Spawn, Quaternion.identity, transform)
-                               .GetComponent<Enemy>())
+                               .GetComponent<Enemy.Enemy>())
                        .ToArray();
 
             _spawn = spawnType switch
@@ -56,7 +56,7 @@ namespace Shake.Enemies
 
         // TODO: to callback?
         private bool IsSpawnComplete()
-            => _enemies.All(_ => _.EnemyState != Enemy.State.Start 
-                                 && _.EnemyState != Enemy.State.Spawn);
+            => _enemies.All(_ => _.EnemyState != Enemy.Enemy.State.Start 
+                                 && _.EnemyState != Enemy.Enemy.State.Spawn);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Shake.Area;
+using Shake.Enemies.Enemy;
 using Shake.Utils;
 
 namespace Shake.Enemies
@@ -15,7 +16,7 @@ namespace Shake.Enemies
             _speed = speed;
         }
 
-        public void Spawn(IReadOnlyCollection<Enemy> enemies)
+        public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies)
         {
             var enemy = GetEnemyToSpawn(enemies);
             if (enemy.IsNone)
@@ -24,21 +25,21 @@ namespace Shake.Enemies
             Spawn(enemy.Value);
         }
 
-        private static Maybe<Enemy> GetEnemyToSpawn(IReadOnlyCollection<Enemy> enemies)
+        private static Maybe<Enemy.Enemy> GetEnemyToSpawn(IReadOnlyCollection<Enemy.Enemy> enemies)
         {
             foreach (var enemy in enemies)
             {
-                if (enemy.EnemyState == Enemy.State.Start)
+                if (enemy.EnemyState == Enemy.Enemy.State.Start)
                     return Maybe.Some(enemy);
                 
-                if (enemy.EnemyState == Enemy.State.Spawn)
-                    return Maybe.None<Enemy>();
+                if (enemy.EnemyState == Enemy.Enemy.State.Spawn)
+                    return Maybe.None<Enemy.Enemy>();
             }
             
-            return Maybe.None<Enemy>();
+            return Maybe.None<Enemy.Enemy>();
         }
         
-        private void Spawn(Enemy enemy)
+        private void Spawn(Enemy.Enemy enemy)
         {
             var start = _zones.ToPoint(isSpawn: true, zone: Zone.Any);
             var finish = _zones.ToPoint(isSpawn: false, zone: Zone.Any);

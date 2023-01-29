@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Shake.Area;
+using Shake.Enemies.Enemy;
 
 namespace Shake.Enemies
 {
@@ -12,7 +13,7 @@ namespace Shake.Enemies
             _zones = zones;
         }
 
-        public void Spawn(IReadOnlyCollection<Enemy> enemies)
+        public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies)
         {
             foreach (var enemy in enemies)
             {
