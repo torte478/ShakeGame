@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Shake.Utils;
+using UnityEngine;
 
 namespace Shake.Player
 {
@@ -13,10 +14,12 @@ namespace Shake.Player
             _audioComponent = GetComponent<AudioComponent>();
         }
 
-        public void DoShot()
+        public Maybe<Vector2> Process()
         {
             var state = _gunComponent.DoShot();
             _audioComponent.DoPlay(state.Type);
+
+            return state.Point;
         }
     }
 }

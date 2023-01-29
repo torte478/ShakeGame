@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Shake.Area;
 using Shake.Enemies.Enemy;
 using Shake.Utils;
@@ -8,44 +9,47 @@ namespace Shake.Enemies
     internal sealed class ConsecutiveEnemiesSpawnStrategy : IEnemiesSpawnStrategy
     {
         private readonly Zones _zones;
-        private readonly float _speed; //TODO : to enemy config
 
-        public ConsecutiveEnemiesSpawnStrategy(Zones zones, float speed)
+        public ConsecutiveEnemiesSpawnStrategy(Zones zones)
         {
             _zones = zones;
-            _speed = speed;
         }
 
-        public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies)
+        public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies, Action callback)
         {
             var enemy = GetEnemyToSpawn(enemies);
-            if (enemy.IsNone)
-                return;
-
-            Spawn(enemy.Value);
+            enemy.Match(_ => Spawn(_, callback));
         }
 
-        private static Maybe<Enemy.Enemy> GetEnemyToSpawn(IReadOnlyCollection<Enemy.Enemy> enemies)
+        private static Maybe<(Enemy.Enemy enemy, bool isLast)> GetEnemyToSpawn(IReadOnlyCollection<Enemy.Enemy> enemies)
         {
+            //TODO: rewrite
+            var i = -1;
+            
             foreach (var enemy in enemies)
             {
+                ++i;
+                
                 if (enemy.EnemyState == Enemy.Enemy.State.Start)
-                    return Maybe.Some(enemy);
+                    return Maybe.Some((enemy, i == enemies.Count - 1));
                 
                 if (enemy.EnemyState == Enemy.Enemy.State.Spawn)
-                    return Maybe.None<Enemy.Enemy>();
+                    return Maybe.None<(Enemy.Enemy, bool)>();
             }
             
-            return Maybe.None<Enemy.Enemy>();
+            return Maybe.None<(Enemy.Enemy, bool)>();
         }
         
-        private void Spawn(Enemy.Enemy enemy)
+        private void Spawn((Enemy.Enemy enemy, bool isLast) _, Action callback)
         {
             var start = _zones.ToPoint(isSpawn: true, zone: Zone.Any);
             var finish = _zones.ToPoint(isSpawn: false, zone: Zone.Any);
 
-            enemy.Spawn(
-                new ConsecutiveSpawnStrategy(start, finish, _speed));
+            _.enemy.Spawn(
+                strategy: new ConsecutiveSpawnStrategy(start, finish),
+                callback: _.isLast
+                              ? callback
+                              : () => { });
         }
     }
 }

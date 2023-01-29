@@ -42,5 +42,28 @@ namespace Shake.Utils
             => IsSome
                    ? $"Some({Value.ToString()})"
                    : "None";
+
+        public Maybe<TOut> Match<TOut>(Func<T, TOut> onSome)
+            => IsSome
+                   ? new Maybe<TOut>(onSome(_value))
+                   : new Maybe<TOut>();
+
+        public Maybe<T> Match(Action<T> onSome)
+        {
+            if (IsSome)
+                onSome(_value);
+
+            return this;
+        }
+
+        public T UnMatch(Func<T> onNone)
+            => IsSome
+                   ? Value
+                   : onNone();
+
+        public T UnMatch()
+            => IsSome
+                   ? Value
+                   : default;
     }
 }

@@ -12,7 +12,7 @@ namespace Shake.Enemies.Enemy
             _position = position;
         }
 
-        public void Spawn(Transform transform, TweenCallback callback)
+        public void Spawn(Transform transform, float speed, TweenCallback callback)
         {
             transform.position = _position;
             callback();

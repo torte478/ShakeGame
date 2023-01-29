@@ -12,8 +12,8 @@ namespace Shake
 
         void Update()
         {
-            player.DoShot();
-            enemies.DoSpawn();
+            var shot = player.Process();
+            enemies.Process(shot);
         }
     }
 }

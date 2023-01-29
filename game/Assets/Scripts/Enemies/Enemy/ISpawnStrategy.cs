@@ -5,6 +5,6 @@ namespace Shake.Enemies.Enemy
 {
     internal interface ISpawnStrategy
     {
-        void Spawn(Transform transform, TweenCallback callback);
+        void Spawn(Transform transform, float speed, TweenCallback callback);
     }
 }

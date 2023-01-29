@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Shake.Area;
 using Shake.Enemies.Enemy;
 
@@ -13,13 +14,15 @@ namespace Shake.Enemies
             _zones = zones;
         }
 
-        public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies)
+        public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies, Action callback)
         {
             foreach (var enemy in enemies)
             {
                 var position = _zones.ToPoint(isSpawn: false, zone: Zone.Any);
-                enemy.Spawn(new InstantSpawnStrategy(position));
+                enemy.Spawn(new InstantSpawnStrategy(position), () => { });
             }
+
+            callback();
         }
     }
 }

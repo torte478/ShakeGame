@@ -57,7 +57,8 @@ namespace Shake.Area
             if (!showCenter)
                 return;
             
-            var center = Instantiate(prefab, GetComponent<Transform>());
+            var center = Instantiate(prefab,  GetComponent<Transform>());
+            center.transform.position = new Vector3(0, 0, 10);
 
             var scale = center.localScale;
             scale.x = width;

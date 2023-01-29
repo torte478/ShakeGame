@@ -338,6 +338,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   misfire: {fileID: 8300000, guid: 176f9c54327f2da4484d1ab2393e4f23, type: 3}
+  shots:
+  - {fileID: 8300000, guid: dc8e3bba218235445aa7cf8ee864289f, type: 3}
+  - {fileID: 8300000, guid: 864bb2dc3ef6d2c49ae383a13b80c0d2, type: 3}
+  - {fileID: 8300000, guid: b8e3145d6fc7919489d6204783c25016, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,9 +457,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8443288720697862763, guid: 9e46bd5616dc38d488ea420cd250bf97, type: 3}
   zones: {fileID: 2083458222}
-  count: 3
-  speed: 1200
-  spawnType: 0
+  config:
+    count: 3
+    spawnType: 0
+    hp: 1
+    speed: 120
 --- !u!4 &1655506522
 Transform:
   m_ObjectHideFlags: 0
@@ -517,7 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 2
   prefab: {fileID: 7849041714097179319, guid: 1a51ce4caf4f4034a8a105f0a2ddbea5, type: 3}
-  showCenter: 0
+  showCenter: 1
   spawnY: 6
   areaOffset: 0.5
   areaBottom: -0.5
