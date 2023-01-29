@@ -24,7 +24,7 @@ namespace Shake.Player
             _camera = Camera.main;
         }
 
-        public ShotResult TryShot()
+        public ShotResult DoShot()
         {
             if (!Input.GetMouseButtonDown(0))
                 return new ShotResult(ShotResultType.None);

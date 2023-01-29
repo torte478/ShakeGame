@@ -14,7 +14,7 @@ namespace Shake.Player
             _source = GetComponent<AudioSource>();
         }
 
-        public void Play(ShotResultType shot)
+        public void DoPlay(ShotResultType shot)
         {
             if (shot == ShotResultType.Misfire)
                 _source.PlayOneShot(misfire);

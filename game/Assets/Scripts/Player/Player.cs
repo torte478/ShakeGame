@@ -2,7 +2,7 @@
 
 namespace Shake.Player
 {
-    public class Player : MonoBehaviour
+    internal sealed class Player : MonoBehaviour
     {
         private GunComponent _gunComponent;
         private AudioComponent _audioComponent;
@@ -13,10 +13,10 @@ namespace Shake.Player
             _audioComponent = GetComponent<AudioComponent>();
         }
 
-        void Update()
+        public void DoShot()
         {
-            var state = _gunComponent.TryShot();
-            _audioComponent.Play(state.Type);
+            var state = _gunComponent.DoShot();
+            _audioComponent.DoPlay(state.Type);
         }
     }
 }
