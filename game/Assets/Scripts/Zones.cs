@@ -16,14 +16,22 @@ public class Zones : MonoBehaviour
     {
         if (!show)
             return;
-        
+
         var center = Instantiate(prefab, GetComponent<Transform>());
-        
+
         var scale = center.localScale;
         scale.x = width;
         center.localScale = scale;
     }
 
     public Zone ToZone(Vector3 point)
-        => point.x <= 0 ? Zone.Left : Zone.Right;
-}
+    {
+        if (point.x < -width / 2f)
+            return Zone.Left;
+
+        if (point.x > width / 2f)
+            return Zone.Right;
+
+        return Zone.Center;
+    }
+}        

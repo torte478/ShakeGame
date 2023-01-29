@@ -42,7 +42,8 @@ namespace Player
 
         private ShotResult DoShot(Vector2 cursor, Zone zone)
         {
-            var isShot = (zone == Zone.Left && _isLeft) 
+            var isShot = (zone == Zone.Center)
+                         || (zone == Zone.Left && _isLeft) 
                          || (zone == Zone.Right && !_isLeft);
             if (!isShot)
                 return new ShotResult(ShotResultType.Misfire);
