@@ -3,19 +3,24 @@ using UnityEngine;
 
 namespace Player
 {
-    internal sealed class GunComponent
+    internal sealed class GunComponent : MonoBehaviour
     {
-        private readonly Zones _zones;
-        private readonly Camera _camera;
+        private Camera _camera;
         
         private bool _isLeft = true;
         private Func<Vector2, Zone, ShotResult> _doShot;
+        
+        [SerializeField]
+        private Zones zones;
 
-        public GunComponent(Zones zones, Camera camera)
+        public GunComponent()
         {
-            _zones = zones;
-            _camera = camera;
             _doShot = DoFirstShot;
+        }
+
+        void Start()
+        {
+            _camera = Camera.main;
         }
 
         public ShotResult TryShot()
@@ -24,7 +29,7 @@ namespace Player
                 return new ShotResult(ShotResultType.None);
 
             var cursor = _camera.ScreenToWorldPoint(Input.mousePosition);
-            var zone = _zones.ToZone(cursor);
+            var zone = zones.ToZone(cursor);
 
             return _doShot(cursor, zone);
         }
