@@ -1,5 +1,6 @@
 ﻿public enum Zone
 {
     Left,
-    Right
+    Right,
+    Center
 }

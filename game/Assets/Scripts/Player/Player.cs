@@ -21,7 +21,7 @@ namespace Player
             var state = _gunComponent.TryShot();
             
             if (state.Type != ShotResultType.None)
-                Debug.Log(state.Point);
+                Debug.Log(state);
         }
     }
 }
