@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEditorInternal;
 
-namespace Utils
+namespace Shake.Utils
 {
     internal static class FuncExtensions
     {

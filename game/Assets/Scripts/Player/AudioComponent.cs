@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Player
+namespace Shake.Player
 {
     internal sealed class AudioComponent : MonoBehaviour
     {

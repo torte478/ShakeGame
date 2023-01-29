@@ -1,4 +1,4 @@
-﻿namespace Player
+﻿namespace Shake.Player
 {
     internal enum ShotResultType
     {

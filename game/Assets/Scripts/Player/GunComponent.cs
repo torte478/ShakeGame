@@ -1,7 +1,8 @@
 ﻿using System;
+using Shake.Area;
 using UnityEngine;
 
-namespace Player
+namespace Shake.Player
 {
     internal sealed class GunComponent : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utils
+namespace Shake.Utils
 {
     internal static class Maybe
     {

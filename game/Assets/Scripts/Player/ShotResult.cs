@@ -1,8 +1,8 @@
 ﻿using System;
+using Shake.Utils;
 using UnityEngine;
-using Utils;
 
-namespace Player
+namespace Shake.Player
 {
     internal struct ShotResult
     {
