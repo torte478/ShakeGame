@@ -1,25 +1,30 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Shake.Area;
-using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Enemies
 {
-    internal sealed class Enemies : MonoBehaviour
+    internal sealed partial class Enemies : MonoBehaviour
     {
         private Enemy[] _enemies;
+        private State _state = State.Spawn;
+        private IEnemiesSpawnStrategy _spawn;
 
         [SerializeField]
         private GameObject prefab;
 
         [SerializeField]
         private Zones zones;
-        
+
         [SerializeField, Min(0f)]
         private int count;
         
         [SerializeField, Min(0f)]
         private float speed;
+        
+        [SerializeField]
+        private SpawnType spawnType;
 
         void Start()
         {
@@ -29,37 +34,21 @@ namespace Shake.Enemies
                            _ => Instantiate(prefab, zones.Spawn, Quaternion.identity, transform)
                                .GetComponent<Enemy>())
                        .ToArray();
+
+            _spawn = spawnType switch
+            {
+                SpawnType.Consecutive => new ConsecutiveEnemiesSpawnStrategy(zones, speed),
+                SpawnType.Instant => new InstantEnemiesSpawnStrategy(zones),
+                _ => throw new Exception(spawnType.ToString())
+            };
         }
         
         public void DoSpawn()
         {
-            var enemy = GetEnemyToSpawn();
-            if (enemy.IsNone)
+            if (_state != State.Spawn)
                 return;
-
-            Spawn(enemy.Value);
-        }
-
-        private void Spawn(Enemy enemy)
-        {
-            var start = zones.ToPoint(isSpawn: true, zone: Zone.Any);
-            var finish = zones.ToPoint(isSpawn: false, zone: Zone.Any);
-
-            enemy.Spawn(start, finish, speed);
-        }
-
-        private Maybe<Enemy> GetEnemyToSpawn()
-        {
-            foreach (var enemy in _enemies)
-            {
-                if (enemy.State == State.Start)
-                    return Maybe.Some(enemy);
-                
-                if (enemy.State == State.Spawn)
-                    return Maybe.None<Enemy>();
-            }
             
-            return Maybe.None<Enemy>();
+            _spawn.Spawn(_enemies);
         }
     }
 }

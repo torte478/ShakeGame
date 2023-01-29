@@ -455,6 +455,7 @@ MonoBehaviour:
   zones: {fileID: 2083458222}
   count: 3
   speed: 800
+  spawnType: 1
 --- !u!4 &1655506522
 Transform:
   m_ObjectHideFlags: 0
