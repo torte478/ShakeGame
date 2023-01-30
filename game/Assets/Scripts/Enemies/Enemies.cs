@@ -70,7 +70,7 @@ namespace Shake.Enemies
             var enemy = Instantiate(prefab, zones.Spawn, Quaternion.identity, transform)
                         .GetComponent<Enemy.Enemy>();
 
-            enemy.Init(enemyConfig, BuildCyclicPath(2).ToArray());
+            enemy.Init(enemyConfig, BuildCyclicPath(config.pathLength).ToArray());
             return enemy;
         }
 

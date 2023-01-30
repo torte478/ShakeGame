@@ -16,5 +16,8 @@ namespace Shake.Enemies
         
         [Min(0f)]
         public float speed;
+
+        [Min(1)]
+        public int pathLength;
     }
 }
