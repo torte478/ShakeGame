@@ -17,10 +17,7 @@ namespace Shake.Enemies
         public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies, Action callback)
         {
             foreach (var enemy in enemies)
-            {
-                var position = _zones.ToPoint(isSpawn: false, zone: Zone.Any);
-                enemy.Spawn(new InstantSpawnStrategy(position), () => { });
-            }
+                enemy.Spawn(new InstantSpawnStrategy(), () => { });
 
             callback();
         }

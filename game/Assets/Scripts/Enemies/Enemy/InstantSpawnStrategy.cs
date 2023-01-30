@@ -5,16 +5,10 @@ namespace Shake.Enemies.Enemy
 {
     internal class InstantSpawnStrategy : ISpawnStrategy
     {
-        private readonly Vector3 _position;
         
-        public InstantSpawnStrategy(Vector3 position)
+        public void Spawn(Transform transform, Vector3 target, float speed, TweenCallback callback)
         {
-            _position = position;
-        }
-
-        public void Spawn(Transform transform, float speed, TweenCallback callback)
-        {
-            transform.position = _position;
+            transform.position = target;
             callback();
         }
     }

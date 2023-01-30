@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Shake.Area;
 using Shake.Enemies.Enemy;
@@ -69,8 +70,19 @@ namespace Shake.Enemies
             var enemy = Instantiate(prefab, zones.Spawn, Quaternion.identity, transform)
                         .GetComponent<Enemy.Enemy>();
 
-            enemy.EnemyConfig = enemyConfig;
+            enemy.Init(enemyConfig, BuildCyclicPath(2).ToArray());
             return enemy;
+        }
+
+        private IEnumerable<Vector3> BuildCyclicPath(int length)
+        {
+            var start = zones.ToPoint();
+            yield return start;
+            
+            foreach (var point in Enumerable.Range(0, length).Select(_ => zones.ToPoint()))
+                yield return point;
+
+            yield return start;
         }
         
         private void CheckShot(Vector2 shot)

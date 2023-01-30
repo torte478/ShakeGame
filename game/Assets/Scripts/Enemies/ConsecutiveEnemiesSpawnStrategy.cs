@@ -42,11 +42,10 @@ namespace Shake.Enemies
         
         private void Spawn((Enemy.Enemy enemy, bool isLast) _, Action callback)
         {
-            var start = _zones.ToPoint(isSpawn: true, zone: Zone.Any);
-            var finish = _zones.ToPoint(isSpawn: false, zone: Zone.Any);
+            var spawn = _zones.ToPoint(isSpawn: true, zone: Zone.Any);
 
             _.enemy.Spawn(
-                strategy: new ConsecutiveSpawnStrategy(start, finish),
+                strategy: new ConsecutiveSpawnStrategy(spawn),
                 callback: _.isLast
                               ? callback
                               : () => { });

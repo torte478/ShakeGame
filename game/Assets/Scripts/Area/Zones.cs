@@ -26,7 +26,7 @@ namespace Shake.Area
 
         public Vector3 Spawn => new(0, spawnY);
 
-        void Start()
+        void Awake()
         {
             var view = Camera.main!;
             
@@ -76,7 +76,7 @@ namespace Shake.Area
             return Zone.Center;
         }
 
-        public Vector3 ToPoint(bool isSpawn, Zone zone)
+        public Vector3 ToPoint(bool isSpawn = false, Zone zone = Zone.Any)
         {
             var xRange = zone switch
             {
