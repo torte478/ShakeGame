@@ -462,7 +462,9 @@ MonoBehaviour:
     spawnType: 0
     hp: 1
     speed: 400
-    pathLength: 10
+    pathLength: 1
+    attackStep: 2
+    remoteAttackDelay: 2
 --- !u!4 &1655506522
 Transform:
   m_ObjectHideFlags: 0

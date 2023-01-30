@@ -43,12 +43,12 @@ namespace Shake.Utils
                    ? $"Some({Value.ToString()})"
                    : "None";
 
-        public Maybe<TOut> Match<TOut>(Func<T, TOut> onSome)
+        public Maybe<TOut> To<TOut>(Func<T, TOut> onSome)
             => IsSome
                    ? new Maybe<TOut>(onSome(_value))
                    : new Maybe<TOut>();
 
-        public Maybe<T> Match(Action<T> onSome)
+        public Maybe<T> To(Action<T> onSome)
         {
             if (IsSome)
                 onSome(_value);

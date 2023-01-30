@@ -30,7 +30,9 @@ namespace Shake.Enemies
             var enemyConfig = new EnemyConfig(
                 hp: config.hp,
                 speed: config.speed,
-                spawn: zones.Spawn);
+                spawn: zones.Spawn,
+                attack: config.attackStep,
+                attackDelay: config.remoteAttackDelay);
             
             _enemies = Enumerable
                        .Range(0, config.count)
@@ -47,7 +49,7 @@ namespace Shake.Enemies
         
         public void Process(Maybe<Vector2> shot)
         {
-            shot.Match(CheckShot);
+            shot.To(CheckShot);
             Spawn();
         }
 

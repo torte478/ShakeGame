@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Shake.Enemies
 {
+    // TODO: refactor
     [Serializable]
     internal sealed class Config
     {
@@ -19,5 +20,11 @@ namespace Shake.Enemies
 
         [Min(1)]
         public int pathLength;
+
+        [Min(0)]
+        public int attackStep;
+
+        [Min(0f)]
+        public float remoteAttackDelay;
     }
 }

@@ -18,7 +18,7 @@ namespace Shake.Enemies
         public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies, Action callback)
         {
             var enemy = GetEnemyToSpawn(enemies);
-            enemy.Match(_ => Spawn(_, callback));
+            enemy.To(_ => Spawn(_, callback));
         }
 
         private static Maybe<(Enemy.Enemy enemy, bool isLast)> GetEnemyToSpawn(IReadOnlyCollection<Enemy.Enemy> enemies)

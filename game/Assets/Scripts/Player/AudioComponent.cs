@@ -23,7 +23,7 @@ namespace Shake.Player
         {
             var clip = GetAudioClip(shot);
 
-            clip.Match(_audio.PlayOneShot);
+            clip.To(_audio.PlayOneShot);
         }
 
         private Maybe<AudioClip> GetAudioClip(ShotResultType shot)

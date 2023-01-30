@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -9,9 +10,10 @@ namespace Shake.Enemies.Enemy
 {
     internal sealed partial class Enemy : MonoBehaviour
     {
-        private int _hp;
         private Vector3[] _path;
+        private int _hp;
         private Maybe<Sequence> _movement;
+        private int _step;
 
         public State EnemyState { get; private set; } = State.Start;
         public EnemyConfig EnemyConfig { get; private set; }
@@ -21,6 +23,7 @@ namespace Shake.Enemies.Enemy
         {
             EnemyConfig = config;
             _path = path.ToArray();
+            _step = 0;
             _movement = Maybe.None<Sequence>();
         }
 
@@ -35,12 +38,26 @@ namespace Shake.Enemies.Enemy
                 speed: EnemyConfig.Speed, 
                 callback: () =>
                           {
-                              OnSpawnComplete();
+                              StartMovement();
                               callback();
                           });
         }
+        
+        public bool Hurt()
+        {
+            --_hp;
+            if (_hp > 0)
+                return false;
 
-        private void OnSpawnComplete()
+            EnemyState = State.Dead;
+
+            _movement.To(_ => _.Pause());
+            transform.position = EnemyConfig.Spawn;
+
+            return true;
+        }
+
+        private void StartMovement()
         {
             EnemyState = State.Ready;
 
@@ -53,26 +70,33 @@ namespace Shake.Enemies.Enemy
                         to: _path[i],
                         speed: EnemyConfig.Speed)
                     .SetEase(Ease.Linear)
+                    .OnComplete(OnMovementComplete)
                     ._(sequence.Append);
             }
             sequence.SetLoops(-1);
 
-
             _movement = Maybe.Some(sequence);
         }
 
-        public bool Hurt()
+        private void OnMovementComplete()
         {
-            --_hp;
-            if (_hp > 0)
-                return false;
+            ++_step;
+            if (_step < EnemyConfig.Attack)
+                return;
 
-            EnemyState = State.Dead;
+            _step = 0;
+            _movement.To(_ => _.Pause());
 
-            _movement.Match(seq => seq.Pause());
-            transform.position = EnemyConfig.Spawn;
+            Debug.Log("start attack");
+            StartCoroutine(WaitAndAttack());
+        }
 
-            return true;
+        private IEnumerator WaitAndAttack()
+        {
+            yield return new WaitForSeconds(EnemyConfig.AttackDelay);
+            
+            Debug.Log("attack");
+            _movement.To(_ => _.Play());
         }
     }
 }
