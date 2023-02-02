@@ -597,6 +597,9 @@ MonoBehaviour:
     pathLength: 1
     attackStep: 2
     remoteAttackDelay: 2
+    meleeAttackSpeed: 100
+    attackType: 0
+    target: {fileID: 434263880}
   bullets: {fileID: 497459638}
 --- !u!4 &1655506522
 Transform:

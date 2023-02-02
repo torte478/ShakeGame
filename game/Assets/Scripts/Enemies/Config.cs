@@ -1,4 +1,5 @@
 ﻿using System;
+using Shake.Enemies.Enemy;
 using UnityEngine;
 
 namespace Shake.Enemies
@@ -26,5 +27,12 @@ namespace Shake.Enemies
 
         [Min(0f)]
         public float remoteAttackDelay;
+
+        [Min(0f)]
+        public float meleeAttackSpeed;
+
+        public AttackType attackType;
+
+        public Transform target;
     }
 }

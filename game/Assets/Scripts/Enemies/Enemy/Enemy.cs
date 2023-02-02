@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -16,7 +15,7 @@ namespace Shake.Enemies.Enemy
         private int _hp;
         private Maybe<Sequence> _movement;
         private int _step;
-        private Pool _bullets;
+        private IAttack _attack;
 
         public State EnemyState { get; private set; } = State.Start;
         public EnemyConfig EnemyConfig { get; private set; }
@@ -28,7 +27,13 @@ namespace Shake.Enemies.Enemy
             _path = path.ToArray();
             _step = 0;
             _movement = Maybe.None<Sequence>();
-            _bullets = bullets;
+            _attack = config.AttackType switch
+            {
+                AttackType.Remote => new RemoteAttack(bullets, config.AttackDelay),
+                AttackType.Melee => new MeleeAttack(config.Target, config.AttackSpeed),
+
+                _ => throw new Exception($"Unexpected attack type: {config.AttackType}")
+            };
         }
 
         public void Spawn(ISpawnStrategy strategy, Action callback)
@@ -90,17 +95,12 @@ namespace Shake.Enemies.Enemy
 
             _step = 0;
             _movement.To(_ => _.Pause());
+
+            var attack = _attack.Start(
+                transform: transform,
+                callback: () => _movement.To(_ => _.Play()));
             
-            StartCoroutine(WaitAndAttack());
-        }
-
-        private IEnumerator WaitAndAttack()
-        {
-            yield return new WaitForSeconds(EnemyConfig.AttackDelay);
-
-            _bullets.Spawn(position: transform.position);
-
-            _movement.To(_ => _.Play());
+            StartCoroutine(attack);
         }
     }
 }

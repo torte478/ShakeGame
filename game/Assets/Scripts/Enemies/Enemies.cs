@@ -36,7 +36,10 @@ namespace Shake.Enemies
                 speed: config.speed,
                 spawn: zones.Spawn,
                 attack: config.attackStep,
-                attackDelay: config.remoteAttackDelay);
+                attackDelay: config.remoteAttackDelay,
+                attackSpeed: config.meleeAttackSpeed,
+                attackType: config.attackType,
+                target: config.target.position);
             
             _enemies = Enumerable
                        .Range(0, config.count)

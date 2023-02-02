@@ -15,14 +15,23 @@ namespace Shake.Enemies.Enemy
         
         //TODO : rename
         public float AttackDelay { get; }
+        
+        public float AttackSpeed { get; }
+        
+        public AttackType AttackType { get; }
 
-        public EnemyConfig(int hp, float speed, Vector3 spawn, int attack, float attackDelay)
+        public Vector3 Target { get; }
+
+        public EnemyConfig(int hp, float speed, Vector3 spawn, int attack, float attackDelay, float attackSpeed, AttackType attackType, Vector3 target)
         {
             Hp = hp;
             Speed = speed;
             Spawn = spawn;
             Attack = attack;
             AttackDelay = attackDelay;
+            AttackSpeed = attackSpeed;
+            AttackType = attackType;
+            Target = target;
         }
     }
 }
