@@ -7,11 +7,11 @@ namespace Shake.Enemies
 {
     internal sealed class InstantEnemiesSpawnStrategy : IEnemiesSpawnStrategy
     {
-        private readonly Zones _zones;
+        private readonly Area.Area _area;
         
-        public InstantEnemiesSpawnStrategy(Zones zones)
+        public InstantEnemiesSpawnStrategy(Area.Area area)
         {
-            _zones = zones;
+            _area = area;
         }
 
         public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies, Action callback)

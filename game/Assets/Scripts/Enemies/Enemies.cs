@@ -5,6 +5,7 @@ using Shake.Area;
 using Shake.Enemies.Bullets;
 using Shake.Enemies.Enemy;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Shake.Enemies
 {
@@ -18,8 +19,9 @@ namespace Shake.Enemies
         [SerializeField]
         private GameObject prefab;
 
+        [FormerlySerializedAs("zones")]
         [SerializeField]
-        private Zones zones;
+        private Area.Area area;
 
         [SerializeField]
         private Config config;
@@ -36,7 +38,7 @@ namespace Shake.Enemies
             var enemyConfig = new EnemyConfig(
                 hp: config.hp,
                 speed: config.speed,
-                spawn: zones.Spawn,
+                spawn: area.Spawn,
                 attack: config.attackStep,
                 attackDelay: config.remoteAttackDelay,
                 attackSpeed: config.meleeAttackSpeed,
@@ -50,8 +52,8 @@ namespace Shake.Enemies
 
             _spawn = config.spawnType switch
             {
-                SpawnType.Consecutive => new ConsecutiveEnemiesSpawnStrategy(zones),
-                SpawnType.Instant => new InstantEnemiesSpawnStrategy(zones),
+                SpawnType.Consecutive => new ConsecutiveEnemiesSpawnStrategy(area),
+                SpawnType.Instant => new InstantEnemiesSpawnStrategy(area),
                 _ => throw new Exception(config.spawnType.ToString())
             };
             
@@ -81,7 +83,7 @@ namespace Shake.Enemies
 
         private Enemy.Enemy InstantiateEnemy(EnemyConfig enemyConfig)
         {
-            var enemy = Instantiate(prefab, zones.Spawn, Quaternion.identity, transform)
+            var enemy = Instantiate(prefab, area.Spawn, Quaternion.identity, transform)
                         .GetComponent<Enemy.Enemy>();
 
             enemy.Init(enemyConfig, bullets, BuildCyclicPath(config.pathLength).ToArray());
@@ -90,10 +92,10 @@ namespace Shake.Enemies
 
         private IEnumerable<Vector3> BuildCyclicPath(int length)
         {
-            var start = zones.ToPoint();
+            var start = area.ToPoint();
             yield return start;
             
-            foreach (var point in Enumerable.Range(0, length).Select(_ => zones.ToPoint()))
+            foreach (var point in Enumerable.Range(0, length).Select(_ => area.ToPoint()))
                 yield return point;
 
             yield return start;

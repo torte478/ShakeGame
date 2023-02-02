@@ -8,11 +8,11 @@ namespace Shake.Enemies
 {
     internal sealed class ConsecutiveEnemiesSpawnStrategy : IEnemiesSpawnStrategy
     {
-        private readonly Zones _zones;
+        private readonly Area.Area _area;
 
-        public ConsecutiveEnemiesSpawnStrategy(Zones zones)
+        public ConsecutiveEnemiesSpawnStrategy(Area.Area area)
         {
-            _zones = zones;
+            _area = area;
         }
 
         public void Spawn(IReadOnlyCollection<Enemy.Enemy> enemies, Action callback)
@@ -42,7 +42,7 @@ namespace Shake.Enemies
         
         private void Spawn((Enemy.Enemy enemy, bool isLast) _, Action callback)
         {
-            var spawn = _zones.ToPoint(isSpawn: true, zone: Zone.Any);
+            var spawn = _area.ToPoint(isSpawn: true);
 
             _.enemy.Spawn(
                 strategy: new ConsecutiveSpawnStrategy(spawn),

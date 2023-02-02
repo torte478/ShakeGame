@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Shake.Contracts;
+using UnityEngine;
 
 namespace Shake.Area
 {
-    internal sealed class Zones : MonoBehaviour
+    internal sealed class Area : MonoBehaviour
     {
-        private Rect _area;
+        private Rect _npcArea; // TODO: rename
         
         [SerializeField, Min(1f)]
         private float width = 1f;
@@ -26,7 +27,7 @@ namespace Shake.Area
 
         public Vector3 Spawn => new(0, spawnY);
 
-        void Awake()
+        void Start()
         {
             var view = Camera.main!;
             
@@ -35,7 +36,7 @@ namespace Shake.Area
                 x: view.ScreenToWorldPoint(new Vector3(view.pixelWidth, 0)).x,
                 y: areaBottom);
             
-            _area = new Rect(
+            _npcArea = new Rect(
                 x: begin.x + areaOffset,
                 y: begin.y - areaOffset,
                 width: end.x - begin.x - 2 * areaOffset,
@@ -48,8 +49,8 @@ namespace Shake.Area
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(
-                new Vector3(_area.center.x, _area.center.y, 0.01f),
-                new Vector3(_area.size.x, _area.size.y, 0.01f));
+                new Vector3(_npcArea.center.x, _npcArea.center.y, 0.01f),
+                new Vector3(_npcArea.size.x, _npcArea.size.y, 0.01f));
         }
 
         private void ShowCenter()
@@ -65,30 +66,30 @@ namespace Shake.Area
             center.localScale = scale;
         }
 
-        public Zone ToZone(Vector3 point)
+        public Region ToRegion(Vector3 point)
         {
             if (point.x < -width / 2f)
-                return Zone.Left;
+                return Region.Left;
 
             if (point.x > width / 2f)
-                return Zone.Right;
+                return Region.Right;
 
-            return Zone.Center;
+            return Region.Center;
         }
 
-        public Vector3 ToPoint(bool isSpawn = false, Zone zone = Zone.Any)
+        public Vector3 ToPoint(bool isSpawn = false, Half area = Half.Any)
         {
-            var xRange = zone switch
+            var xRange = area switch
             {
-                Zone.Left => (_area.xMin, 0),
-                Zone.Right => (0, _area.xMax),
-                _ => (_area.xMin, _area.xMax)
+                Half.Left => (_npcArea.xMin, 0),
+                Half.Right => (0, _npcArea.xMax),
+                _ => (_npcArea.xMin, _npcArea.xMax)
             };
             var x = Random.Range(xRange.xMin, xRange.xMax);
             
             var y = isSpawn
                         ? spawnY
-                        : Random.Range(_area.yMin, _area.yMax);
+                        : Random.Range(_npcArea.yMin, _npcArea.yMax);
 
             return new Vector3(x, y);
         }
