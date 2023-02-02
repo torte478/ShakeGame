@@ -4,7 +4,6 @@ using System.Linq;
 using Shake.Area;
 using Shake.Enemies.Bullets;
 using Shake.Enemies.Enemy;
-using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Enemies
@@ -27,6 +26,9 @@ namespace Shake.Enemies
 
         [SerializeField]
         private Pool bullets;
+
+        [SerializeField]
+        private Player.Player player;
 
         void Start()
         {
@@ -52,12 +54,15 @@ namespace Shake.Enemies
                 SpawnType.Instant => new InstantEnemiesSpawnStrategy(zones),
                 _ => throw new Exception(config.spawnType.ToString())
             };
-        }
-        
-        public void Process(Maybe<Vector2> shot)
-        {
-            shot.To(CheckShot);
+            
+            player.Shot += CheckDamage;
+
             Spawn();
+        }
+
+        void OnDisable()
+        {
+            player.Shot -= CheckDamage;
         }
 
         private void Spawn()
@@ -110,6 +115,12 @@ namespace Shake.Enemies
             var killed = enemy.Hurt();
             if (killed)
                 ++_dead;
+        }
+
+        private void CheckDamage(Vector2 shot)
+        {
+            CheckShot(shot);
+            Spawn();
         }
     }
 }

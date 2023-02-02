@@ -1,4 +1,5 @@
-﻿using Shake.Utils;
+﻿using System;
+using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Player
@@ -8,18 +9,21 @@ namespace Shake.Player
         private GunComponent _gunComponent;
         private AudioComponent _audioComponent;
 
+        public event Action<Vector2> Shot;
+
         void Start()
         {
             _gunComponent = GetComponent<GunComponent>();
             _audioComponent = GetComponent<AudioComponent>();
         }
 
-        public Maybe<Vector2> Process()
+        void Update()
         {
             var state = _gunComponent.DoShot();
             _audioComponent.DoPlay(state.Type);
 
-            return state.Point;
+            if (state.Type == ShotResultType.Shot)
+                Shot.Call(state.Point.Value);
         }
     }
 }

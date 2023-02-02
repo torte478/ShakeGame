@@ -11,16 +11,13 @@ namespace Shake.Utils
     internal sealed class Maybe<T>
     {
         private readonly T _value;
-
-        public bool IsSome { get; }
-
-        public bool IsNone => !IsSome;
+        private readonly bool _isSome;
 
         public T Value
         {
             get
             {
-                if (!IsSome)
+                if (!_isSome)
                     throw new Exception("Maybe is None");
 
                 return _value;
@@ -29,41 +26,31 @@ namespace Shake.Utils
         
         public Maybe()
         {
-            IsSome = false;
+            _isSome = false;
         }
 
         public Maybe(T value)
         {
-            IsSome = true;
+            _isSome = true;
             _value = value;
         }
 
         public override string ToString()
-            => IsSome
+            => _isSome
                    ? $"Some({Value.ToString()})"
                    : "None";
 
         public Maybe<TOut> To<TOut>(Func<T, TOut> onSome)
-            => IsSome
+            => _isSome
                    ? new Maybe<TOut>(onSome(_value))
                    : new Maybe<TOut>();
 
         public Maybe<T> To(Action<T> onSome)
         {
-            if (IsSome)
+            if (_isSome)
                 onSome(_value);
 
             return this;
         }
-
-        public T UnMatch(Func<T> onNone)
-            => IsSome
-                   ? Value
-                   : onNone();
-
-        public T UnMatch()
-            => IsSome
-                   ? Value
-                   : default;
     }
 }
