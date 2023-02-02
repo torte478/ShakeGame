@@ -3,28 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Shake.Enemies.Bullets;
 using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Enemies.Enemy
 {
+    // TODO: refactor
     internal sealed partial class Enemy : MonoBehaviour
     {
         private Vector3[] _path;
         private int _hp;
         private Maybe<Sequence> _movement;
         private int _step;
+        private Pool _bullets;
 
         public State EnemyState { get; private set; } = State.Start;
         public EnemyConfig EnemyConfig { get; private set; }
 
         // TODO: shit
-        public void Init(EnemyConfig config, IReadOnlyCollection<Vector3> path)
+        public void Init(EnemyConfig config, Pool bullets, IReadOnlyCollection<Vector3> path)
         {
             EnemyConfig = config;
             _path = path.ToArray();
             _step = 0;
             _movement = Maybe.None<Sequence>();
+            _bullets = bullets;
         }
 
         public void Spawn(ISpawnStrategy strategy, Action callback)
@@ -70,7 +74,7 @@ namespace Shake.Enemies.Enemy
                         to: _path[i],
                         speed: EnemyConfig.Speed)
                     .SetEase(Ease.Linear)
-                    .OnComplete(OnMovementComplete)
+                    .OnComplete(OnMovementStepComplete)
                     ._(sequence.Append);
             }
             sequence.SetLoops(-1);
@@ -78,7 +82,7 @@ namespace Shake.Enemies.Enemy
             _movement = Maybe.Some(sequence);
         }
 
-        private void OnMovementComplete()
+        private void OnMovementStepComplete()
         {
             ++_step;
             if (_step < EnemyConfig.Attack)
@@ -86,16 +90,16 @@ namespace Shake.Enemies.Enemy
 
             _step = 0;
             _movement.To(_ => _.Pause());
-
-            Debug.Log("start attack");
+            
             StartCoroutine(WaitAndAttack());
         }
 
         private IEnumerator WaitAndAttack()
         {
             yield return new WaitForSeconds(EnemyConfig.AttackDelay);
-            
-            Debug.Log("attack");
+
+            _bullets.Spawn(position: transform.position);
+
             _movement.To(_ => _.Play());
         }
     }

@@ -7,14 +7,27 @@ namespace Shake.Enemies.Bullets
     {
         private readonly Stack<Bullet> _bullets = new();
 
+        private Transform _transform;
+
         [SerializeField]
         private Bullet prefab;
+
+        [SerializeField]
+        private Transform player;
+
+        [SerializeField, Min(0f)]
+        private float force;
+
+        void Start()
+        {
+            _transform = GetComponent<Transform>();
+        }
         
-        public Bullet Get(Vector3 position, Vector3 target, float speed)
+        public Bullet Spawn(Vector3 position)
         {
             var bullet = GetBullet();
-            bullet.Init(this, position, target, speed);
             bullet.gameObject.SetActive(true);
+            bullet.Init(this, position, player.position, force);
             return bullet;
         }
 
@@ -29,7 +42,7 @@ namespace Shake.Enemies.Bullets
             if (_bullets.Count > 0)
                 return _bullets.Pop();
 
-            return Instantiate(prefab).GetComponent<Bullet>();
+            return Instantiate(prefab, _transform).GetComponent<Bullet>();
         }
     }
 }
