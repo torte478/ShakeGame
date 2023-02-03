@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Shake
+namespace Shake.Area
 {
     internal sealed class Area : MonoBehaviour
     {

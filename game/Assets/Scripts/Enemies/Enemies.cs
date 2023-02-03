@@ -21,13 +21,13 @@ namespace Shake.Enemies
 
         [FormerlySerializedAs("zones")]
         [SerializeField]
-        private Area area;
+        private Area.Area area;
 
         [SerializeField]
         private Config config;
 
         [SerializeField]
-        private Pool bullets;
+        private Bullets.Bullets bullets;
 
         void Start()
         {

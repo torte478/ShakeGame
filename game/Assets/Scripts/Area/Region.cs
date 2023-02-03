@@ -1,4 +1,4 @@
-﻿namespace Shake
+﻿namespace Shake.Area
 {
     internal enum Region
     {

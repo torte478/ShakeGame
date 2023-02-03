@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using Shake.Enemies.Bullets;
 using Shake.Utils;
 using UnityEngine;
 
@@ -21,7 +20,7 @@ namespace Shake.Enemies.Enemy
         public EnemyConfig EnemyConfig { get; private set; }
 
         // TODO: shit
-        public void Init(EnemyConfig config, Pool bullets, IReadOnlyCollection<Vector3> path)
+        public void Init(EnemyConfig config, Bullets.Bullets bullets, IReadOnlyCollection<Vector3> path)
         {
             EnemyConfig = config;
             _path = path.ToArray();
@@ -29,7 +28,7 @@ namespace Shake.Enemies.Enemy
             _movement = Maybe.None<Sequence>();
             _attack = config.AttackType switch
             {
-                AttackType.Remote => new RemoteAttack(bullets, config.AttackDelay),
+                AttackType.Remote => new RemoteAttack(bullets, config.AttackDelay, config.Target),
                 AttackType.Melee => new MeleeAttack(config.Target, config.AttackSpeed),
 
                 _ => throw new Exception($"Unexpected attack type: {config.AttackType}")

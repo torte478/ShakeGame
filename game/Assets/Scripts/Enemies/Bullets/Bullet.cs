@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Enemies.Bullets
@@ -6,34 +8,36 @@ namespace Shake.Enemies.Bullets
     [RequireComponent(typeof(Rigidbody2D))] // TODO: add to another
     internal sealed class Bullet : MonoBehaviour
     {
-        private Pool _pool;
-        private Rigidbody2D _rigidbody;
         private Transform _transform;
+        private Rigidbody2D _rigidbody;
 
-        void Awake() // TODO: Start?
+        [SerializeField, Min(0.01f)]
+        private float force;
+
+        public event Action<Bullet> Deadline;
+
+        void Awake()
         {
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        public void Init(Pool pool, Vector3 position, Vector3 target, float force)
+        public void Shot(Vector3 from, Vector3 to)
         {
-            _pool = pool;
-            
-            _transform.position = position;
+            _transform.position = from;
 
             _rigidbody.AddForce(
-                force: (target - position) * force, 
+                force: (to - from) * force, 
                 mode: ForceMode2D.Impulse);
 
-            StartCoroutine(Release());
+            StartCoroutine(WaitDeadline());
         }
 
-        private IEnumerator Release()
+        private IEnumerator WaitDeadline()
         {
             yield return new WaitForSeconds(2);
-            
-            _pool.Release(this);
+
+            Deadline.Call(this);
         }
     }
 }
