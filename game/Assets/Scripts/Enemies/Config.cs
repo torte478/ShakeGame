@@ -31,8 +31,6 @@ namespace Shake.Enemies
         [Min(0f)]
         public float meleeAttackSpeed;
 
-        public AttackType attackType;
-
         public Transform target;
     }
 }

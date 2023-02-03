@@ -16,18 +16,15 @@ namespace Shake.Enemies.Enemy
         
         public float AttackSpeed { get; }
         
-        public AttackType AttackType { get; }
-
         public Vector3 Target { get; }
 
-        public EnemyConfig(int hp, float speed, int attack, float attackDelay, float attackSpeed, AttackType attackType, Vector3 target)
+        public EnemyConfig(int hp, float speed, int attack, float attackDelay, float attackSpeed, Vector3 target)
         {
             Hp = hp;
             Speed = speed;
             Attack = attack;
             AttackDelay = attackDelay;
             AttackSpeed = attackSpeed;
-            AttackType = attackType;
             Target = target;
         }
     }

@@ -38,7 +38,6 @@ namespace Shake.Enemies
                 attack: config.attackStep,
                 attackDelay: config.remoteAttackDelay,
                 attackSpeed: config.meleeAttackSpeed,
-                attackType: config.attackType,
                 target: config.target.position);
             
             _enemies = Enumerable

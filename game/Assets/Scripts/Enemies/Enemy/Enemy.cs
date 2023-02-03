@@ -4,19 +4,21 @@ using System.Linq;
 using DG.Tweening;
 using Shake.Utils;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Shake.Enemies.Enemy
 {
     // TODO: refactor
-    internal sealed partial class Enemy : MonoBehaviour
+    internal abstract class Enemy : MonoBehaviour
     {
-        private Vector3[] _path;
+        private IAttack _attack;
+        
         private int _hp;
+        private Vector3[] _path;
         private Maybe<Sequence> _movement;
         private int _step;
-        private IAttack _attack;
 
-        public State EnemyState { get; private set; } = State.Start;
+        public EnemyStateType EnemyStateType { get; private set; } = EnemyStateType.Start;
         public EnemyConfig EnemyConfig { get; private set; }
 
         // TODO: shit
@@ -26,20 +28,17 @@ namespace Shake.Enemies.Enemy
             _path = path.ToArray();
             _step = 0;
             _movement = Maybe.None<Sequence>();
-            _attack = config.AttackType switch
-            {
-                AttackType.Remote => new RemoteAttack(bullets, config.AttackDelay, config.Target),
-                AttackType.Melee => new MeleeAttack(config.Target, config.AttackSpeed),
-
-                _ => throw new Exception($"Unexpected attack type: {config.AttackType}")
-            };
+            
+            _attack = Random.Range(0, 2) == 0
+                          ? new RemoteAttack(bullets, config.AttackDelay, config.Target)
+                          : new MeleeAttack(config.Target, config.AttackSpeed);
         }
 
         public void Spawn(ISpawnStrategy strategy, Action callback)
         {
             _hp = EnemyConfig.Hp;
             
-            EnemyState = State.Spawn;
+            EnemyStateType = EnemyStateType.Spawn;
             strategy.Spawn(
                 transform: transform,
                 target: _path[0],
@@ -57,7 +56,7 @@ namespace Shake.Enemies.Enemy
             if (_hp > 0)
                 return false;
 
-            EnemyState = State.Dead;
+            EnemyStateType = EnemyStateType.Dead;
 
             _movement.To(_ => _.Pause());
             transform.position = Consts.Outside;
@@ -67,7 +66,7 @@ namespace Shake.Enemies.Enemy
 
         private void StartMovement()
         {
-            EnemyState = State.Ready;
+            EnemyStateType = EnemyStateType.Ready;
 
             var sequence = DOTween.Sequence();
             for (var i = 0; i < _path.Length; ++i)
