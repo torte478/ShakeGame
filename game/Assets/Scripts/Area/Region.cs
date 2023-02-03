@@ -1,4 +1,4 @@
-﻿namespace Shake.Contracts
+﻿namespace Shake.Area
 {
     internal enum Region
     {

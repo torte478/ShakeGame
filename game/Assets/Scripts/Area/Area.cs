@@ -1,5 +1,4 @@
-﻿using Shake.Contracts;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Shake.Area
 {

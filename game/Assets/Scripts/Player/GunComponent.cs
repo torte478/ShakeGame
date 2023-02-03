@@ -1,6 +1,5 @@
 ﻿using System;
 using Shake.Area;
-using Shake.Contracts;
 using UnityEngine;
 using UnityEngine.Serialization;
 

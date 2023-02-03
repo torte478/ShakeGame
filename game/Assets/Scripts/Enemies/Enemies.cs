@@ -29,9 +29,6 @@ namespace Shake.Enemies
         [SerializeField]
         private Pool bullets;
 
-        [SerializeField]
-        private Player.Player player;
-
         void Start()
         {
             //TODO: rename
@@ -57,14 +54,13 @@ namespace Shake.Enemies
                 _ => throw new Exception(config.spawnType.ToString())
             };
             
-            player.Shot += CheckDamage;
-
             Spawn();
         }
-
-        void OnDisable()
+        
+        public void CheckDamage(Vector2 shot)
         {
-            player.Shot -= CheckDamage;
+            CheckShot(shot);
+            Spawn();
         }
 
         private void Spawn()
@@ -117,12 +113,6 @@ namespace Shake.Enemies
             var killed = enemy.Hurt();
             if (killed)
                 ++_dead;
-        }
-
-        private void CheckDamage(Vector2 shot)
-        {
-            CheckShot(shot);
-            Spawn();
         }
     }
 }
