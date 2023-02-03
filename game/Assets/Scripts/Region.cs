@@ -1,6 +1,6 @@
-﻿namespace Shake.Area
+﻿namespace Shake
 {
-    internal enum Half
+    internal enum Region
     {
         Left,
         Right,

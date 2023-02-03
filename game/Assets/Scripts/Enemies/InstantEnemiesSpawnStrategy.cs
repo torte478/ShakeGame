@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shake.Area;
 using Shake.Enemies.Enemy;
 
 namespace Shake.Enemies
 {
     internal sealed class InstantEnemiesSpawnStrategy : IEnemiesSpawnStrategy
     {
-        private readonly Area.Area _area;
+        private readonly Area _area;
         
-        public InstantEnemiesSpawnStrategy(Area.Area area)
+        public InstantEnemiesSpawnStrategy(Area area)
         {
             _area = area;
         }

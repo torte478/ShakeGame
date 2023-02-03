@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shake.Area;
 using Shake.Enemies.Enemy;
 using Shake.Utils;
 
@@ -8,9 +7,9 @@ namespace Shake.Enemies
 {
     internal sealed class ConsecutiveEnemiesSpawnStrategy : IEnemiesSpawnStrategy
     {
-        private readonly Area.Area _area;
+        private readonly Area _area;
 
-        public ConsecutiveEnemiesSpawnStrategy(Area.Area area)
+        public ConsecutiveEnemiesSpawnStrategy(Area area)
         {
             _area = area;
         }

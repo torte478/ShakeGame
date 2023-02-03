@@ -61,7 +61,7 @@ namespace Shake.Enemies.Enemy
             EnemyState = State.Dead;
 
             _movement.To(_ => _.Pause());
-            transform.position = EnemyConfig.Spawn;
+            transform.position = Consts.Outside;
 
             return true;
         }

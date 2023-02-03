@@ -9,8 +9,6 @@ namespace Shake.Enemies.Enemy
         
         public float Speed { get; }
         
-        public Vector3 Spawn { get; }
-        
         public int Attack { get; }
         
         //TODO : rename
@@ -22,11 +20,10 @@ namespace Shake.Enemies.Enemy
 
         public Vector3 Target { get; }
 
-        public EnemyConfig(int hp, float speed, Vector3 spawn, int attack, float attackDelay, float attackSpeed, AttackType attackType, Vector3 target)
+        public EnemyConfig(int hp, float speed, int attack, float attackDelay, float attackSpeed, AttackType attackType, Vector3 target)
         {
             Hp = hp;
             Speed = speed;
-            Spawn = spawn;
             Attack = attack;
             AttackDelay = attackDelay;
             AttackSpeed = attackSpeed;

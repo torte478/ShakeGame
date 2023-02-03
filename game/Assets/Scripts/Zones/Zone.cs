@@ -1,6 +1,6 @@
-﻿namespace Shake.Area
+﻿namespace Shake.Zones
 {
-    internal enum Region
+    internal enum Zone
     {
         Left,
         Right,

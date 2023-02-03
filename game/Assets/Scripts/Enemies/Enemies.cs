@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Shake.Area;
 using Shake.Enemies.Bullets;
 using Shake.Enemies.Enemy;
+using Shake.Utils;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,7 +21,7 @@ namespace Shake.Enemies
 
         [FormerlySerializedAs("zones")]
         [SerializeField]
-        private Area.Area area;
+        private Area area;
 
         [SerializeField]
         private Config config;
@@ -35,7 +35,6 @@ namespace Shake.Enemies
             var enemyConfig = new EnemyConfig(
                 hp: config.hp,
                 speed: config.speed,
-                spawn: area.Spawn,
                 attack: config.attackStep,
                 attackDelay: config.remoteAttackDelay,
                 attackSpeed: config.meleeAttackSpeed,
@@ -79,7 +78,7 @@ namespace Shake.Enemies
 
         private Enemy.Enemy InstantiateEnemy(EnemyConfig enemyConfig)
         {
-            var enemy = Instantiate(prefab, area.Spawn, Quaternion.identity, transform)
+            var enemy = Instantiate(prefab, Consts.Outside, Quaternion.identity, transform)
                         .GetComponent<Enemy.Enemy>();
 
             enemy.Init(enemyConfig, bullets, BuildCyclicPath(config.pathLength).ToArray());

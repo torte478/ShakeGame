@@ -1,5 +1,5 @@
 ﻿using System;
-using Shake.Area;
+using Shake.Zones;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -10,11 +10,10 @@ namespace Shake.Player
         private Camera _camera;
         
         private bool _isLeft = true;
-        private Func<Vector2, Region, ShotResult> _shot;
-        
-        [FormerlySerializedAs("zones")]
+        private Func<Vector2, Zone, ShotResult> _shot;
+
         [SerializeField]
-        private Area.Area area;
+        private Zones.Zones zones;
 
         public GunComponent()
         {
@@ -32,14 +31,14 @@ namespace Shake.Player
                 return new ShotResult(ShotResultType.None);
 
             var cursor = _camera.ScreenToWorldPoint(Input.mousePosition);
-            var zone = area.ToRegion(cursor);
+            var zone = zones.ToZone(cursor);
 
             return _shot(cursor, zone);
         }
 
-        private ShotResult DoFirstShot(Vector2 cursor, Region region)
+        private ShotResult DoFirstShot(Vector2 cursor, Zone zone)
         {
-            var isLeft = region is Region.Left or Region.Center;
+            var isLeft = zone is Zone.Left or Zone.Center;
             var result = new ShotResult(ShotResultType.Shot, cursor, isLeft);
 
             _isLeft = !isLeft;
@@ -48,11 +47,11 @@ namespace Shake.Player
             return result;
         }
 
-        private ShotResult DoShot(Vector2 cursor, Region region)
+        private ShotResult DoShot(Vector2 cursor, Zone zone)
         {
-            var isShot = (region == Region.Center)
-                         || (region == Region.Left && _isLeft) 
-                         || (region == Region.Right && !_isLeft);
+            var isShot = (zone == Zone.Center)
+                         || (zone == Zone.Left && _isLeft) 
+                         || (zone == Zone.Right && !_isLeft);
             if (!isShot)
                 return new ShotResult(ShotResultType.Misfire);
 
