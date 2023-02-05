@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+﻿using Shake.Utils;
+using UnityEngine;
 
 namespace Shake.Area
 {
     internal sealed class Area : MonoBehaviour
     {
-        private const float Eps = 0.01f;
-        
         [SerializeField]
         private Rect area;
         
@@ -16,8 +15,8 @@ namespace Shake.Area
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(
-                center: new Vector3(area.center.x, area.center.y, Eps),
-                size: new Vector3(area.size.x, area.size.y, Eps));
+                center: new Vector3(area.center.x, area.center.y, Consts.Eps),
+                size: new Vector3(area.size.x, area.size.y, Consts.Eps));
         }
 
         public Vector3 ToPoint(bool isSpawn = false, Region region = Region.Any)

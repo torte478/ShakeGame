@@ -11,7 +11,7 @@ namespace Shake.Enemies.Bullets
         private Transform _transform;
         private Rigidbody2D _rigidbody;
 
-        [SerializeField, Min(0.01f)]
+        [SerializeField, Min(Consts.Eps)]
         private float force;
 
         public event Action<Bullet> Deadline;

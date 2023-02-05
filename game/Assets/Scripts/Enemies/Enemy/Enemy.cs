@@ -1,47 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
+using Shake.Enemies.Enemy.Attack;
+using Shake.Enemies.Enemy.Hp;
 using Shake.Utils;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Shake.Enemies.Enemy
 {
-    // TODO: refactor
-    internal abstract class Enemy : MonoBehaviour
+    internal sealed class Enemy : MonoBehaviour
     {
+        private IHp _hp;
         private IAttack _attack;
-        
-        private int _hp;
-        private Vector3[] _path;
-        private Maybe<Sequence> _movement;
-        private int _step;
+        private MovementComponent _movement;
 
         public EnemyStateType EnemyStateType { get; private set; } = EnemyStateType.Start;
         public EnemyConfig EnemyConfig { get; private set; }
 
+        void Awake()
+        {
+            _hp = GetComponent<IHp>();
+            _attack = GetComponent<IAttack>();
+        }
+
+        void OnDestroy()
+        {
+            if (_movement is null)
+                return;
+
+            _movement.Step -= CheckStartAttack;
+            _attack.Finish -= _movement.Resume;
+        }
+
         // TODO: shit
-        public void Init(EnemyConfig config, Bullets.Bullets bullets, IReadOnlyCollection<Vector3> path)
+        public void Init(EnemyConfig config, IReadOnlyCollection<Vector3> path)
         {
             EnemyConfig = config;
-            _path = path.ToArray();
-            _step = 0;
-            _movement = Maybe.None<Sequence>();
             
-            _attack = Random.Range(0, 2) == 0
-                          ? new RemoteAttack(bullets, config.AttackDelay, config.Target)
-                          : new MeleeAttack(config.Target, config.AttackSpeed);
+            if (_movement is not null)
+            {
+                _movement.Step -= CheckStartAttack;
+                _attack.Finish -= _movement.Resume;    
+            }
+            
+            _movement = new MovementComponent(path.ToArray());
+
+            _movement.Step += CheckStartAttack;
+            _attack.Finish += _movement.Resume;
         }
 
         public void Spawn(ISpawnStrategy strategy, Action callback)
         {
-            _hp = EnemyConfig.Hp;
-            
             EnemyStateType = EnemyStateType.Spawn;
             strategy.Spawn(
                 transform: transform,
-                target: _path[0],
+                target: _movement.Begin,
                 speed: EnemyConfig.Speed, 
                 callback: () =>
                           {
@@ -49,16 +62,15 @@ namespace Shake.Enemies.Enemy
                               callback();
                           });
         }
-        
+
         public bool Hurt()
         {
-            --_hp;
-            if (_hp > 0)
+            if (!_hp.Damage())
                 return false;
 
             EnemyStateType = EnemyStateType.Dead;
 
-            _movement.To(_ => _.Pause());
+            _movement.Pause();
             transform.position = Consts.Outside;
 
             return true;
@@ -67,38 +79,16 @@ namespace Shake.Enemies.Enemy
         private void StartMovement()
         {
             EnemyStateType = EnemyStateType.Ready;
-
-            var sequence = DOTween.Sequence();
-            for (var i = 0; i < _path.Length; ++i)
-            {
-                transform
-                    .DOTimingMove(
-                        from: i > 0 ? _path[i - 1] : transform.position,
-                        to: _path[i],
-                        speed: EnemyConfig.Speed)
-                    .SetEase(Ease.Linear)
-                    .OnComplete(OnMovementStepComplete)
-                    ._(sequence.Append);
-            }
-            sequence.SetLoops(-1);
-
-            _movement = Maybe.Some(sequence);
+            _movement.Start(transform, EnemyConfig.Speed);
         }
 
-        private void OnMovementStepComplete()
+        private void CheckStartAttack(int step)
         {
-            ++_step;
-            if (_step < EnemyConfig.Attack)
+            if (step % EnemyConfig.Attack != 0)
                 return;
 
-            _step = 0;
-            _movement.To(_ => _.Pause());
-
-            var attack = _attack.Start(
-                transform: transform,
-                callback: () => _movement.To(_ => _.Play()));
-            
-            StartCoroutine(attack);
+            _movement.Pause();
+            _attack.Start();
         }
     }
 }

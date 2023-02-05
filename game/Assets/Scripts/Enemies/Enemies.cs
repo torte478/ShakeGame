@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Shake.Enemies.Bullets;
 using Shake.Enemies.Enemy;
 using Shake.Utils;
 using UnityEngine;
@@ -25,9 +24,6 @@ namespace Shake.Enemies
 
         [SerializeField]
         private Config config;
-
-        [SerializeField]
-        private Bullets.Bullets bullets;
 
         void Start()
         {
@@ -80,7 +76,7 @@ namespace Shake.Enemies
             var enemy = Instantiate(prefab, Consts.Outside, Quaternion.identity, transform)
                         .GetComponent<Enemy.Enemy>();
 
-            enemy.Init(enemyConfig, bullets, BuildCyclicPath(config.pathLength).ToArray());
+            enemy.Init(enemyConfig, BuildCyclicPath(config.pathLength).ToArray());
             return enemy;
         }
 

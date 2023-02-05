@@ -2,7 +2,7 @@
 
 namespace Shake
 {
-    public class Game : MonoBehaviour
+    internal sealed class Game : MonoBehaviour
     {
         [SerializeField]
         private Player.Player player;
