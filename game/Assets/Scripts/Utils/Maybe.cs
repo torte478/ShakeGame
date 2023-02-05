@@ -45,6 +45,11 @@ namespace Shake.Utils
                    ? new Maybe<TOut>(onSome(_value))
                    : new Maybe<TOut>();
 
+        public TOut To<TOut>(Func<T, TOut> onSome, Func<TOut> onNone)
+            => _isSome
+                   ? onSome(_value)
+                   : onNone();
+
         public Maybe<T> To(Action<T> onSome)
         {
             if (_isSome)

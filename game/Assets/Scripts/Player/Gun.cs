@@ -1,21 +1,21 @@
 ﻿using System;
+using Shake.Utils;
 using Shake.Zones;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Shake.Player
 {
-    internal sealed class GunComponent : MonoBehaviour
+    internal sealed class Gun : MonoBehaviour
     {
         private Camera _camera;
         
         private bool _isLeft = true;
-        private Func<Vector2, Zone, ShotResult> _shot;
+        private Func<Vector3, Zone, Shot> _shot;
 
         [SerializeField]
         private Zones.Zones zones;
 
-        public GunComponent()
+        public Gun()
         {
             _shot = DoFirstShot;
         }
@@ -25,37 +25,38 @@ namespace Shake.Player
             _camera = Camera.main;
         }
 
-        public ShotResult DoShot()
+        public Maybe<Shot> DoShot()
         {
             if (!Input.GetMouseButtonDown(0))
-                return new ShotResult(ShotResultType.None);
+                return Maybe.None<Shot>();
 
             var cursor = _camera.ScreenToWorldPoint(Input.mousePosition);
             var zone = zones.ToZone(cursor);
 
-            return _shot(cursor, zone);
+            var shot = _shot(cursor, zone);
+            return Maybe.Some(shot);
         }
 
-        private ShotResult DoFirstShot(Vector2 cursor, Zone zone)
+        private Shot DoFirstShot(Vector3 cursor, Zone zone)
         {
             var isLeft = zone is Zone.Left or Zone.Center;
-            var result = new ShotResult(ShotResultType.Shot, cursor, isLeft);
+            var shot = Shot.Create(cursor, isLeft);
 
             _isLeft = !isLeft;
             _shot = DoShot;
-            
-            return result;
+
+            return shot;
         }
 
-        private ShotResult DoShot(Vector2 cursor, Zone zone)
+        private Shot DoShot(Vector3 cursor, Zone zone)
         {
             var isShot = (zone == Zone.Center)
                          || (zone == Zone.Left && _isLeft) 
                          || (zone == Zone.Right && !_isLeft);
             if (!isShot)
-                return new ShotResult(ShotResultType.Misfire);
+                return Shot.Misfire();
 
-            var result = new ShotResult(ShotResultType.Shot, cursor, _isLeft); 
+            var result = Shot.Create(cursor, _isLeft); 
             _isLeft = !_isLeft;
             return result;
         }

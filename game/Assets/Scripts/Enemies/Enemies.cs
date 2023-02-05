@@ -31,7 +31,7 @@ namespace Shake.Enemies
             StartCoroutine(SpawnEnemies());
         }
         
-        public void CheckDamage(Vector2 shot)
+        public void CheckDamage(Vector3 shot)
         {
             CheckShot(shot);
             if (_dead >= config.count)
@@ -72,7 +72,7 @@ namespace Shake.Enemies
                .Select(_ => area.ToPoint())
                .ToArray();
         
-        private void CheckShot(Vector2 shot)
+        private void CheckShot(Vector3 shot)
         {
             // TODO: to layer-based collision
             var target = Physics2D.OverlapPoint(shot);

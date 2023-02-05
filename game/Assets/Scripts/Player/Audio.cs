@@ -3,9 +3,11 @@ using UnityEngine;
 
 namespace Shake.Player
 {
-    internal sealed class AudioComponent : MonoBehaviour
+    [RequireComponent(typeof(AudioSource))]
+    internal sealed class Audio : MonoBehaviour
     {
         private AudioSource _audio;
+        
         private int _previous;
 
         [SerializeField]
@@ -19,28 +21,24 @@ namespace Shake.Player
             _audio = GetComponent<AudioSource>();
         }
 
-        public void DoPlay(ShotResultType shot)
+        public void Play(Shot shot)
         {
-            var clip = GetAudioClip(shot);
+            var clip = shot.Point.To(
+                _ => GetRandomShot(),
+                () => misfire);
 
-            clip.To(_audio.PlayOneShot);
+            _audio.PlayOneShot(clip);
         }
 
-        private Maybe<AudioClip> GetAudioClip(ShotResultType shot)
+        private AudioClip GetRandomShot()
         {
-            if (shot == ShotResultType.Misfire)
-                return Maybe.Some(misfire);
-
-            if (shot != ShotResultType.Shot)
-                return Maybe.None<AudioClip>();
-
             var random = Random.Range(0, shots.Length);
             var index = random < _previous
                             ? random
                             : (_previous + 1) % shots.Length;
             _previous = index;
 
-            return Maybe.Some(shots[index]);
+            return shots[index];
         }
     }
 }

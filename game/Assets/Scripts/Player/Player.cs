@@ -4,26 +4,27 @@ using UnityEngine;
 
 namespace Shake.Player
 {
+    [RequireComponent(typeof(Gun))]
+    [RequireComponent(typeof(Audio))]
     internal sealed class Player : MonoBehaviour
     {
-        private GunComponent _gunComponent;
-        private AudioComponent _audioComponent;
+        private Gun _gun;
+        private Audio _audio;
 
-        public event Action<Vector2> Shot;
+        public event Action<Vector3> Shot;
 
         void Start()
         {
-            _gunComponent = GetComponent<GunComponent>();
-            _audioComponent = GetComponent<AudioComponent>();
+            _gun = GetComponent<Gun>();
+            _audio = GetComponent<Audio>();
         }
 
         void Update()
         {
-            var state = _gunComponent.DoShot();
-            _audioComponent.DoPlay(state.Type);
-
-            if (state.Type == ShotResultType.Shot)
-                Shot.Call(state.Point.Value);
+            var shot = _gun.DoShot();
+                
+            shot.To(_audio.Play);
+            shot.To(_ => _.Point.To(Shot.Call));
         }
     }
 }
