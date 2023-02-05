@@ -1,36 +1,17 @@
-﻿using System;
-using System.Collections;
-using DG.Tweening;
+﻿using DG.Tweening;
 using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Enemies.Enemy.Attack
 {
-    internal sealed class MeleeAttack : MonoBehaviour, IAttack
+    internal sealed class MeleeAttack : BaseAttack
     {
-        [SerializeField]
-        private Transform target;
-        
         [SerializeField, Min(Consts.Eps)]
         private float speed;
 
-        [SerializeField, Min(Consts.Eps)]
-        private float delay;
-
-        public event Action Finish;
-
-        public void Start()
-        {
-            StartCoroutine(DelayAttack());
-        }
-
-        private IEnumerator DelayAttack()
-        {
-            yield return new WaitForSeconds(delay);
-            
-            transform
-                .DOTimingMove(target.position, speed)
-                .SetEase(Ease.Linear);
-        }
+        protected override void Attack(Vector3 target)
+            => transform
+               .DOTimingMove(target, speed)
+               .SetEase(Ease.Linear); 
     }
 }

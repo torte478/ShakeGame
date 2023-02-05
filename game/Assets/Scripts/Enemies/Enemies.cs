@@ -104,7 +104,7 @@ namespace Shake.Enemies
             if (enemy == null)
                 return;
             
-            var killed = enemy.Hurt();
+            var killed = enemy.Damage();
             if (killed)
                 ++_dead;
         }

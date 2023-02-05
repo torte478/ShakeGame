@@ -3,5 +3,6 @@
     internal interface IHp
     {
         bool Damage();
+        void Init();
     }
 }

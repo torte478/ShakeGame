@@ -7,5 +7,7 @@ namespace Shake.Enemies.Enemy.Attack
         event Action Finish;
         
         void Start();
+
+        bool IsAttack(int step);
     }
 }

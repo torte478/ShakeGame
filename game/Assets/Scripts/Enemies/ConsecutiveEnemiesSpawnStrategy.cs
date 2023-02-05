@@ -29,11 +29,11 @@ namespace Shake.Enemies
             {
                 ++i;
                 
-                if (enemy.EnemyStateType == EnemyStateType.Start)
+                // if (enemy.EnemyStateType == EnemyStateType.Start)
                     return Maybe.Some((enemy, i == enemies.Count - 1));
                 
-                if (enemy.EnemyStateType == EnemyStateType.Spawn)
-                    return Maybe.None<(Enemy.Enemy, bool)>();
+                // if (enemy.EnemyStateType == EnemyStateType.Spawn)
+                //     return Maybe.None<(Enemy.Enemy, bool)>();
             }
             
             return Maybe.None<(Enemy.Enemy, bool)>();
