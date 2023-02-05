@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Shake.Enemies.Enemy.Attack
 {
@@ -6,7 +7,7 @@ namespace Shake.Enemies.Enemy.Attack
     {
         event Action Finish;
         
-        void Start();
+        void Attack(Vector3 target);
 
         bool IsAttack(int step);
     }

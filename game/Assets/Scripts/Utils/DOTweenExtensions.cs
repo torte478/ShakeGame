@@ -14,7 +14,7 @@ namespace Shake.Utils
             Vector3 to,
             float speed)
         {
-            var duration = Vector3.Distance(transform.position, to) * 100f / speed;
+            var duration = Vector3.Distance(transform.position, to) / speed;
 
             return transform.DOMove(to, duration);
         }
@@ -25,7 +25,7 @@ namespace Shake.Utils
             Vector3 to,
             float speed)
         {
-            var duration = Vector3.Distance(from, to) * 100f / speed;
+            var duration = Vector3.Distance(from, to) / speed;
 
             return transform.DOMove(to, duration);
         }

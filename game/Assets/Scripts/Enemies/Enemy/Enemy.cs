@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Shake.Enemies.Enemy.Attack;
 using Shake.Enemies.Enemy.Hp;
 using Shake.Utils;
@@ -15,6 +16,10 @@ namespace Shake.Enemies.Enemy
         private IHp _hp;
         private IAttack _attack;
         private Movement _movement;
+        
+        private Vector3 _target;
+
+        public event Action<Enemy> Death;
 
         void Awake()
         {
@@ -33,8 +38,9 @@ namespace Shake.Enemies.Enemy
             _attack.Finish -= _movement.Resume;
         }
 
-        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path)
+        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path, Vector3 target)
         {
+            _target = target;
             _movement!.Init(position, path);
             _hp.Init();
         }
@@ -44,7 +50,7 @@ namespace Shake.Enemies.Enemy
             if (!_hp.Damage())
                 return false;
 
-            Death();
+            ToDeath();
             return true;
         }
 
@@ -54,13 +60,14 @@ namespace Shake.Enemies.Enemy
                 return;
 
             _movement.Pause();
-            _attack.Start();
+            _attack.Attack(_target);
         }
 
-        private void Death()
+        private void ToDeath()
         {
             _movement.Pause();
             _transform.position = Consts.Outside;
+            Death.Call(this);
         }
     }
 }

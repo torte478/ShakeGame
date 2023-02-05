@@ -10,9 +10,6 @@ namespace Shake.Enemies.Enemy.Attack
         [SerializeField, Min(Consts.Eps)]
         private float delay;
         
-        [SerializeField]
-        private Transform target;
-        
         [SerializeField, Min(1)]
         private int frequency;
 
@@ -21,20 +18,20 @@ namespace Shake.Enemies.Enemy.Attack
         public bool IsAttack(int step)
             => step % frequency == 0;
 
-        public void Start()
-            => DelayAttack()
+        public void Attack(Vector3 target)
+            => DelayAttack(target)
                 ._(StartCoroutine);
 
-        protected abstract void Attack(Vector3 target);
+        protected abstract void AttackInner(Vector3 target);
 
         protected void CallFinish()
             => Finish.Call();
         
-        private IEnumerator DelayAttack()
+        private IEnumerator DelayAttack(Vector3 target)
         {
             yield return new WaitForSeconds(delay);
 
-            Attack(target.position);
+            AttackInner(target);
         }
     }
 }

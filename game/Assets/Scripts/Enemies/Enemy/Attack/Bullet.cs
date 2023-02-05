@@ -3,7 +3,7 @@ using System.Collections;
 using Shake.Utils;
 using UnityEngine;
 
-namespace Shake.Enemies.Bullets
+namespace Shake.Enemies.Enemy.Attack
 {
     [RequireComponent(typeof(Rigidbody2D))] // TODO: add to another
     internal sealed class Bullet : MonoBehaviour

@@ -36,9 +36,11 @@ namespace Shake.Enemies.Enemy
 
             var loop = DOTween.Sequence();
             foreach (var (from, to) in EnumerateCyclicPairs(path))
-                loop.Append(BuildStep(from, to));
+                BuildStep(from, to)
+                    .OnComplete(IncrementStepIndex)
+                    ._(loop.Append);
             
-            loop.SetLoops(-1);
+            loop.SetLoops(int.MaxValue);
 
             _movement.Append(loop);
         }
@@ -52,8 +54,7 @@ namespace Shake.Enemies.Enemy
         private TweenerCore<Vector3, Vector3, VectorOptions> BuildStep(Vector3 from, Vector3 to)
             => _transform
                .DOTimingMove(from, to, speed)
-               .SetEase(Ease.Linear)
-               .OnComplete(IncrementStepIndex);
+               .SetEase(Ease.Linear);
 
         private void IncrementStepIndex()
         {

@@ -1,36 +1,24 @@
 ﻿using System;
-using Shake.Enemies.Enemy;
+using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Enemies
 {
-    // TODO: refactor
+    // TODO public fields?
     [Serializable]
     internal sealed class Config
     {
-        [Min(0f)]
+        public Spawn spawn;
+        
+        public Kind kind;
+        
+        [Min(1)]
         public int count;
-        
-        public SpawnType spawnType;
-
-        [Min(0)]
-        public int hp;
-        
-        [Min(0f)]
-        public float speed;
 
         [Min(1)]
         public int pathLength;
 
-        [Min(0)]
-        public int attackStep;
-
-        [Min(0f)]
-        public float remoteAttackDelay;
-
-        [Min(0f)]
-        public float meleeAttackSpeed;
-
-        public Transform target;
+        [Min(Consts.Eps)]
+        public float spawnDelay;
     }
 }

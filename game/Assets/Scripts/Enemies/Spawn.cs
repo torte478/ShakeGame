@@ -1,6 +1,6 @@
 ﻿namespace Shake.Enemies
 {
-    internal enum SpawnType
+    internal enum Spawn
     {
         Instant,
         Consecutive

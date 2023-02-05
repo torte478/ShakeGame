@@ -12,6 +12,8 @@ namespace Shake
 
         void Start()
         {
+            enemies.Init(player.transform.position);
+
             player.Shot += enemies.CheckDamage;
         }
 

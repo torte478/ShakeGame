@@ -1,107 +1,86 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
-using Shake.Enemies.Enemy;
-using Shake.Utils;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Shake.Enemies
 {
-    internal sealed partial class Enemies : MonoBehaviour
+    [RequireComponent(typeof(Factory))]
+    internal sealed class Enemies : MonoBehaviour
     {
-        private Enemy.Enemy[] _enemies;
-        private State _state = State.Spawn;
-        private IEnemiesSpawnStrategy _spawn;
+        private Factory _factory;
+
+        private Vector3 _target;
+        
         private int _dead;
 
-        [SerializeField]
-        private GameObject prefab;
-
-        [FormerlySerializedAs("zones")]
         [SerializeField]
         private Area.Area area;
 
         [SerializeField]
         private Config config;
 
-        void Start()
+        void Awake()
         {
-            //TODO: rename
-            var enemyConfig = new EnemyConfig(
-                hp: config.hp,
-                speed: config.speed,
-                attack: config.attackStep,
-                attackDelay: config.remoteAttackDelay,
-                attackSpeed: config.meleeAttackSpeed,
-                target: config.target.position);
-            
-            _enemies = Enumerable
-                       .Range(0, config.count)
-                       .Select(_ => InstantiateEnemy(enemyConfig))
-                       .ToArray();
+            _factory = GetComponent<Factory>();
+        }
 
-            _spawn = config.spawnType switch
-            {
-                SpawnType.Consecutive => new ConsecutiveEnemiesSpawnStrategy(area),
-                SpawnType.Instant => new InstantEnemiesSpawnStrategy(area),
-                _ => throw new Exception(config.spawnType.ToString())
-            };
-            
-            Spawn();
+        public void Init(Vector3 target)
+        {
+            _target = target;
+            StartCoroutine(SpawnEnemies());
         }
         
         public void CheckDamage(Vector2 shot)
         {
             CheckShot(shot);
-            Spawn();
+            if (_dead >= config.count)
+                StartSpawn();
         }
 
-        private void Spawn()
+        private void StartSpawn()
         {
-            if (_dead == _enemies.Length)
+            _dead = 0;
+            StartCoroutine(SpawnEnemies());
+        }
+
+        private IEnumerator SpawnEnemies()
+        {
+            foreach (var _ in Enumerable.Range(0, config.count))
             {
-                _dead = 0;
-                _state = State.Spawn;
+                var enemy = _factory.Create(config.kind);
+                
+                var path = BuildPath();
+                var start = config.spawn switch
+                {
+                    Spawn.Consecutive => area.ToPoint(isSpawn: true),
+                    Spawn.Instant => path[0],
+                    
+                    _ => throw new Exception($"Unknown type {config.spawn}")
+                };
+                
+                enemy.Init(start, path, _target);
+
+                if (config.spawn == Spawn.Consecutive)
+                    yield return new WaitForSeconds(config.spawnDelay);
             }
-            
-            if (_state != State.Spawn)
-                return;
-            
-            _spawn.Spawn(_enemies, () => { _state = State.Ready; });
         }
 
-        private Enemy.Enemy InstantiateEnemy(EnemyConfig enemyConfig)
-        {
-            var enemy = Instantiate(prefab, Consts.Outside, Quaternion.identity, transform)
-                        .GetComponent<Enemy.Enemy>();
-
-            enemy.Init(enemyConfig, BuildCyclicPath(config.pathLength).ToArray());
-            return enemy;
-        }
-
-        private IEnumerable<Vector3> BuildCyclicPath(int length)
-        {
-            var start = area.ToPoint();
-            yield return start;
-            
-            foreach (var point in Enumerable.Range(0, length).Select(_ => area.ToPoint()))
-                yield return point;
-
-            yield return start;
-        }
+        private Vector3[] BuildPath()
+            => Enumerable
+               .Range(0, config.pathLength)
+               .Select(_ => area.ToPoint())
+               .ToArray();
         
         private void CheckShot(Vector2 shot)
         {
             // TODO: to layer-based collision
             var target = Physics2D.OverlapPoint(shot);
             
-            // TODO: fix that shit
             if (target == null)
                 return;
-            
-            var enemy = target.gameObject.GetComponent<Enemy.Enemy>();
-            if (enemy == null)
+
+            if (!target.gameObject.TryGetComponent<Enemy.Enemy>(out var enemy))
                 return;
             
             var killed = enemy.Damage();

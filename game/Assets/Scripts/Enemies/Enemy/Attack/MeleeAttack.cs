@@ -9,7 +9,7 @@ namespace Shake.Enemies.Enemy.Attack
         [SerializeField, Min(Consts.Eps)]
         private float speed;
 
-        protected override void Attack(Vector3 target)
+        protected override void AttackInner(Vector3 target)
             => transform
                .DOTimingMove(target, speed)
                .SetEase(Ease.Linear); 
