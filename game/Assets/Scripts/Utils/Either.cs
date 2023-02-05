@@ -6,7 +6,7 @@ namespace Shake.Utils
     {
         private readonly TLeft _left;
         private readonly TRight _right;
-        private bool _isLeft;
+        private readonly bool _isLeft;
 
         public TLeft Left
         {

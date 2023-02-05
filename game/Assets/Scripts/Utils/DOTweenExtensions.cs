@@ -13,11 +13,7 @@ namespace Shake.Utils
             this Transform transform,
             Vector3 to,
             float speed)
-        {
-            var duration = Vector3.Distance(transform.position, to) / speed;
-
-            return transform.DOMove(to, duration);
-        }
+            => transform.DOTimingMove(transform.position, to, speed);
         
         public static TweenerCore<Vector3, Vector3, VectorOptions> DOTimingMove(
             this Transform transform,
