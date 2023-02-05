@@ -1,42 +1,27 @@
 ﻿using UnityEngine;
-using UnityEngine.Pool;
 
 namespace Shake.Enemies.Enemy.Attack
 {
     internal sealed class RemoteAttack : BaseAttack
     {
-        private ObjectPool<Bullet> _pool; // TODO: to static
+        private Bullets _bullets;
         private Transform _transform;
-        
-        [SerializeField]
-        private Bullet prefab;
 
         void Awake()
         {
             _transform = GetComponent<Transform>();
-
-            _pool = new ObjectPool<Bullet>(
-                createFunc: Create,
-                actionOnGet: b => b.gameObject.SetActive(true),
-                actionOnRelease: b => b.gameObject.SetActive(false),
-                actionOnDestroy: b => b.Deadline -= _pool.Release,
-                maxSize: 20);
         }
         
-        protected override void AttackInner(Vector3 target)
+        public override void Init(Bullets bullets)
         {
-            _pool
-                .Get()
-                .Shot(from: _transform.position, to: target);
-
-            CallFinish();
+            _bullets = bullets; //TODO: to singleton
         }
 
-        private Bullet Create()
+        protected override void AttackInner(Vector3 target)
         {
-            var bullet = Instantiate(prefab, _transform);
-            bullet.Deadline += _pool.Release;
-            return bullet;
+            _bullets.Shot(from: _transform.position, to: target);
+
+            CallFinish();
         }
     }
 }

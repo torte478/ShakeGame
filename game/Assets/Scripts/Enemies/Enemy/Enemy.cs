@@ -38,11 +38,12 @@ namespace Shake.Enemies.Enemy
             _attack.Finish -= _movement.Resume;
         }
 
-        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path, Vector3 target)
+        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path, Vector3 target, Bullets bullets)
         {
             _target = target;
             _movement!.Init(position, path);
             _hp.Init();
+            _attack.Init(bullets);
         }
 
         public bool Damage()

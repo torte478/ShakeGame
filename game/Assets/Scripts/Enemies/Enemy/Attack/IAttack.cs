@@ -6,6 +6,8 @@ namespace Shake.Enemies.Enemy.Attack
     internal interface IAttack
     {
         event Action Finish;
+
+        void Init(Bullets bullets);
         
         void Attack(Vector3 target);
 

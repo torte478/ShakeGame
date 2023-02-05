@@ -21,6 +21,8 @@ namespace Shake.Enemies.Enemy.Attack
         public void Attack(Vector3 target)
             => DelayAttack(target)
                 ._(StartCoroutine);
+        
+        public virtual void Init(Bullets bullets) {}
 
         protected abstract void AttackInner(Vector3 target);
 

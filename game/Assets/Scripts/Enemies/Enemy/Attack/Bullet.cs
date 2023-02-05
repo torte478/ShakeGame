@@ -14,6 +14,9 @@ namespace Shake.Enemies.Enemy.Attack
         [SerializeField, Min(Consts.Eps)]
         private float force;
 
+        [SerializeField, Min(1f)]
+        private float deadline;
+
         public event Action<Bullet> Deadline;
 
         void Awake()
@@ -26,8 +29,9 @@ namespace Shake.Enemies.Enemy.Attack
         {
             _transform.position = from;
 
+            var direction = (to - from).normalized;
             _rigidbody.AddForce(
-                force: (to - from) * force, 
+                force: direction * force, 
                 mode: ForceMode2D.Impulse);
 
             StartCoroutine(WaitDeadline());
@@ -35,7 +39,7 @@ namespace Shake.Enemies.Enemy.Attack
 
         private IEnumerator WaitDeadline()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(deadline);
 
             Deadline.Call(this);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using Shake.Enemies.Enemy.Attack;
 using UnityEngine;
 
 namespace Shake.Enemies
@@ -8,6 +9,8 @@ namespace Shake.Enemies
     [RequireComponent(typeof(Factory))]
     internal sealed class Enemies : MonoBehaviour
     {
+        private const int EnemiesLayer = 6;
+        
         private Factory _factory;
 
         private Vector3 _target;
@@ -19,6 +22,9 @@ namespace Shake.Enemies
 
         [SerializeField]
         private Config config;
+
+        [SerializeField]
+        private Bullets bullets;
 
         void Awake()
         {
@@ -59,7 +65,7 @@ namespace Shake.Enemies
                     _ => throw new Exception($"Unknown type {config.spawn}")
                 };
                 
-                enemy.Init(start, path, _target);
+                enemy.Init(start, path, _target, bullets);
 
                 if (config.spawn == Spawn.Consecutive)
                     yield return new WaitForSeconds(config.spawnDelay);
@@ -74,9 +80,7 @@ namespace Shake.Enemies
         
         private void CheckShot(Vector3 shot)
         {
-            // TODO: to layer-based collision
-            var target = Physics2D.OverlapPoint(shot);
-            
+            var target = Physics2D.OverlapPoint(shot, EnemiesLayer);
             if (target == null)
                 return;
 

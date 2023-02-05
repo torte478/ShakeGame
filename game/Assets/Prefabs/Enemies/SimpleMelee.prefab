@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 624690726410961551}
   - component: {fileID: -3291505973078542923}
   - component: {fileID: -3278826799065105561}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SimpleMelee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
