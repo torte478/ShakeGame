@@ -8,9 +8,9 @@ namespace Shake.Enemies
     internal sealed class Config
     {
         public Spawn spawn;
-        
+
         public Kind kind;
-        
+
         [Min(1)]
         public int count;
 

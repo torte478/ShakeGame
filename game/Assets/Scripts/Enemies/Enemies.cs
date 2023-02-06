@@ -8,12 +8,8 @@ namespace Shake.Enemies
     [RequireComponent(typeof(Factory))]
     internal sealed class Enemies : MonoBehaviour
     {
-        private const int EnemiesLayer = 6;
-        
         private Factory _factory;
 
-        private Vector3 _target;
-        
         private int _dead;
 
         [SerializeField]
@@ -22,18 +18,30 @@ namespace Shake.Enemies
         [SerializeField]
         private Config config;
 
+        [SerializeField]
+        private LayerMask layer;
+
+        [SerializeField]
+        private Player.Player player;
+
         void Awake()
         {
             _factory = GetComponent<Factory>();
         }
 
-        public void Init(Vector3 target)
+        void Start()
         {
-            _target = target;
-            StartCoroutine(SpawnEnemies());
+            player.Shot += CheckDamage;
+            
+            StartSpawn();
         }
-        
-        public void CheckDamage(Vector3 shot)
+
+        void OnDestroy()
+        {
+            player.Shot -= CheckDamage;
+        }
+
+        private void CheckDamage(Vector3 shot)
         {
             CheckShot(shot);
             if (_dead >= config.count)
@@ -48,6 +56,7 @@ namespace Shake.Enemies
 
         private IEnumerator SpawnEnemies()
         {
+            var target = player.transform.position;
             foreach (var _ in Enumerable.Range(0, config.count))
             {
                 var enemy = _factory.Create(config.kind);
@@ -61,7 +70,7 @@ namespace Shake.Enemies
                     _ => throw new Exception($"Unknown type {config.spawn}")
                 };
                 
-                enemy.Init(start, path, _target);
+                enemy.Init(start, path, target);
 
                 if (config.spawn == Spawn.Consecutive)
                     yield return new WaitForSeconds(config.spawnDelay);
@@ -76,7 +85,7 @@ namespace Shake.Enemies
         
         private void CheckShot(Vector3 shot)
         {
-            var target = Physics2D.OverlapPoint(shot, EnemiesLayer);
+            var target = Physics2D.OverlapPoint(shot, layer);
             if (target == null)
                 return;
 

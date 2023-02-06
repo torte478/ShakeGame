@@ -2,7 +2,7 @@
 {
     internal interface IHp
     {
-        bool Damage();
         void Init();
+        bool Damage();
     }
 }

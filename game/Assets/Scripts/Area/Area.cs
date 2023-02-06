@@ -28,7 +28,7 @@ namespace Shake.Area
                 _ => (area.xMin, area.xMax)
             };
             var x = Random.Range(xRange.xMin, xRange.xMax);
-            
+
             var y = isSpawn
                         ? spawnY
                         : Random.Range(area.yMin, area.yMax);
