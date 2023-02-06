@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Shake.Enemies
 {
-    // TODO public fields?
     [Serializable]
     internal sealed class Config
     {

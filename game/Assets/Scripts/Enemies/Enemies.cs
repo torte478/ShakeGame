@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using Shake.Enemies.Enemy.Attack;
 using UnityEngine;
 
 namespace Shake.Enemies
@@ -22,9 +21,6 @@ namespace Shake.Enemies
 
         [SerializeField]
         private Config config;
-
-        [SerializeField]
-        private Bullets bullets;
 
         void Awake()
         {
@@ -65,7 +61,7 @@ namespace Shake.Enemies
                     _ => throw new Exception($"Unknown type {config.spawn}")
                 };
                 
-                enemy.Init(start, path, _target, bullets);
+                enemy.Init(start, path, _target);
 
                 if (config.spawn == Spawn.Consecutive)
                     yield return new WaitForSeconds(config.spawnDelay);

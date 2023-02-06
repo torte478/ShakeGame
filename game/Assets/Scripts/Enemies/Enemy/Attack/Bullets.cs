@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Shake.Enemies.Enemy.Attack
@@ -10,9 +11,16 @@ namespace Shake.Enemies.Enemy.Attack
         
         [SerializeField]
         private Bullet prefab;
+        
+        public static Bullets Instance { get; private set; }
 
         void Awake()
         {
+            if (Instance != null)
+                throw new Exception("Singleton already initialized");
+            
+            Instance = this;
+            
             _transform = GetComponent<Transform>();
 
             _pool = new ObjectPool<Bullet>(

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Shake.Enemies.Enemy.Attack
 {
-    [RequireComponent(typeof(Rigidbody2D))] // TODO: add to another
+    [RequireComponent(typeof(Rigidbody2D))]
     internal sealed class Bullet : MonoBehaviour
     {
         private Transform _transform;
