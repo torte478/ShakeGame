@@ -26,5 +26,10 @@ namespace Shake.Player
             shot.To(_audio.Play);
             shot.To(_ => _.Point.To(Shot.Call));
         }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            Debug.Log("GAME OVER!");
+        }
     }
 }

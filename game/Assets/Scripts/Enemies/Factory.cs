@@ -65,7 +65,11 @@ namespace Shake.Enemies
         {
             var enemy = Instantiate(prefab, _transform);
             enemy.transform.position = Consts.Outside;
-            enemy.gameObject.SetActive(false);
+
+            var obj = enemy.gameObject;
+            obj.SetActive(false);
+            obj.layer = prefab.gameObject.layer;
+
             enemy.Death += _pools[kind].Release;
             return enemy;
         }

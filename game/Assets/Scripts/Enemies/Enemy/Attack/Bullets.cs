@@ -37,6 +37,7 @@ namespace Shake.Enemies.Enemy.Attack
         private Bullet Create()
         {
             var bullet = Instantiate(prefab, _transform);
+            bullet.gameObject.layer = prefab.gameObject.layer;
             bullet.Deadline += _pool.Release;
             return bullet;
         }

@@ -154,7 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 2
   frequency: 1
-  prefab: {fileID: 8942716360120611358, guid: 06739f06dccf06d4f9e145858692b527, type: 3}
 --- !u!114 &-3291505973078542923
 MonoBehaviour:
   m_ObjectHideFlags: 0

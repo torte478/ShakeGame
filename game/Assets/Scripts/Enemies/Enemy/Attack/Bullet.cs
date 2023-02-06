@@ -24,6 +24,12 @@ namespace Shake.Enemies.Enemy.Attack
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody2D>();
         }
+        
+        // ReSharper disable once UnusedParameter.Local
+        void OnCollisionEnter2D(Collision2D col)
+        {
+            Deadline.Call(this);
+        }
 
         public void Shot(Vector3 from, Vector3 to)
         {
@@ -41,7 +47,8 @@ namespace Shake.Enemies.Enemy.Attack
         {
             yield return new WaitForSeconds(deadline);
 
-            Deadline.Call(this);
+            if (gameObject.activeSelf)
+                Deadline.Call(this);
         }
     }
 }
