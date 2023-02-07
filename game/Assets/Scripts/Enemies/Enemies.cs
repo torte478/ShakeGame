@@ -64,7 +64,7 @@ namespace Shake.Enemies
                 var path = BuildPath();
                 var start = config.spawn switch
                 {
-                    Spawn.Consecutive => area.ToPoint(isSpawn: true),
+                    Spawn.Consecutive => area.ToPoint(isSpawn: true, region: config.region),
                     Spawn.Instant => path[0],
                     
                     _ => throw new Exception($"Unknown type {config.spawn}")
@@ -80,7 +80,7 @@ namespace Shake.Enemies
         private Vector3[] BuildPath()
             => Enumerable
                .Range(0, config.pathLength)
-               .Select(_ => area.ToPoint())
+               .Select(_ => area.ToPoint(region: config.region))
                .ToArray();
         
         private void CheckShot(Vector3 shot)

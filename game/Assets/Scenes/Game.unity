@@ -415,9 +415,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   area: {fileID: 2083458222}
   config:
-    spawn: 0
-    kind: 1
-    count: 1
+    spawn: 1
+    kind: 4
+    region: 2
+    count: 3
     pathLength: 2
     spawnDelay: 1
   layer:
