@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 624690726410961551}
   - component: {fileID: -3278826799065105561}
   - component: {fileID: -562913952916756991}
-  - component: {fileID: -3507683674049448726}
+  - component: {fileID: 2918512235024505982}
   m_Layer: 6
   m_Name: Heavy
   m_TagString: Untagged
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 3
---- !u!50 &-3507683674049448726
+--- !u!50 &2918512235024505982
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Shake.Creatures
 {
     internal abstract class Creatures<T> : MonoBehaviour
-        where T : ICreature
+        where T : Creature
     {
         [SerializeField]
         private LayerMask layer;

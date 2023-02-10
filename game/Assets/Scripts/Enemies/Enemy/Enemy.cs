@@ -1,62 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
 using Shake.Creatures;
 using Shake.Enemies.Enemy.Attack;
-using Shake.Enemies.Enemy.Hp;
 using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Enemies.Enemy
 {
     [RequireComponent(typeof(IAttack))]
-    [RequireComponent(typeof(IHp))]
-    [RequireComponent(typeof(Movement))]
-    internal sealed class Enemy : MonoBehaviour, ICreature
+    internal sealed class Enemy : Creature
     {
         private Transform _transform;
-        private IHp _hp;
         private IAttack _attack;
-        private Movement _movement;
-        
         private Vector3 _target;
 
         public event Action<Enemy> Death;
 
-        void Awake()
+        protected override void InnerAwake()
         {
             _transform = GetComponent<Transform>();
-            _hp = GetComponent<IHp>();
             _attack = GetComponent<IAttack>();
-            _movement = GetComponent<Movement>();
 
-            _movement.Step += CheckStartAttack;
-            _attack.Finish += _movement.Resume;
+            Movement.Step += CheckStartAttack;
+            _attack.Finish += Movement.Resume;
         }
 
-        void Start()
+        protected override void InnerStart()
         {
             _target = Player.Player.Instance.transform.position;
         }
 
-        void OnDestroy()
+        protected override void InnerDestroy()
         {
-            _movement.Step -= CheckStartAttack;
-            _attack.Finish -= _movement.Resume;
+            Movement.Step -= CheckStartAttack;
+            _attack.Finish -= Movement.Resume;
         }
 
-        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path)
+        protected override void InnerDeath()
         {
-            _movement!.Init(position, path);
-            _hp.Init();
-        }
-
-        public bool Damage()
-        {
-            if (!_hp.Damage())
-                return false;
-
-            ToDeath();
-            return true;
+            Movement.Pause();
+            _transform.position = Consts.Outside;
+            Death.Call(this);
         }
 
         private void CheckStartAttack(int step)
@@ -64,15 +47,8 @@ namespace Shake.Enemies.Enemy
             if (!_attack.IsAttack(step))
                 return;
 
-            _movement.Pause();
+            Movement.Pause();
             _attack.Attack(_target);
-        }
-
-        private void ToDeath()
-        {
-            _movement.Pause();
-            _transform.position = Consts.Outside;
-            Death.Call(this);
         }
     }
 }

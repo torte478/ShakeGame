@@ -418,13 +418,12 @@ MonoBehaviour:
     m_Bits: 64
   config:
     spawn: 0
-    kind: 0
     region: 2
     count: 3
     pathLength: 2
     spawnDelay: 1
   area: {fileID: 2083458222}
-  kind: 0
+  kind: 3
 --- !u!4 &1655506522
 Transform:
   m_ObjectHideFlags: 0
