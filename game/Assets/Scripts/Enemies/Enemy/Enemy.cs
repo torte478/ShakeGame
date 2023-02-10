@@ -32,15 +32,19 @@ namespace Shake.Enemies.Enemy
             _attack.Finish += _movement.Resume;
         }
 
+        void Start()
+        {
+            _target = Player.Player.Instance.transform.position;
+        }
+
         void OnDestroy()
         {
             _movement.Step -= CheckStartAttack;
             _attack.Finish -= _movement.Resume;
         }
 
-        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path, Vector3 target)
+        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path)
         {
-            _target = target;
             _movement!.Init(position, path);
             _hp.Init();
         }

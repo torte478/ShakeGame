@@ -21,9 +21,6 @@ namespace Shake.Enemies
         [SerializeField]
         private LayerMask layer;
 
-        [SerializeField]
-        private Player.Player player;
-
         void Awake()
         {
             _factory = GetComponent<Factory>();
@@ -31,14 +28,14 @@ namespace Shake.Enemies
 
         void Start()
         {
-            player.Shot += CheckDamage;
+            Player.Player.Instance.Shot += CheckDamage;
             
             StartSpawn();
         }
 
         void OnDestroy()
         {
-            player.Shot -= CheckDamage;
+            Player.Player.Instance.Shot -= CheckDamage;
         }
 
         private void CheckDamage(Vector3 shot)
@@ -56,7 +53,6 @@ namespace Shake.Enemies
 
         private IEnumerator SpawnEnemies()
         {
-            var target = player.transform.position;
             foreach (var _ in Enumerable.Range(0, config.count))
             {
                 var enemy = _factory.Create(config.kind);
@@ -70,7 +66,7 @@ namespace Shake.Enemies
                     _ => throw new Exception($"Unknown type {config.spawn}")
                 };
                 
-                enemy.Init(start, path, target);
+                enemy.Init(start, path);
 
                 if (config.spawn == Spawn.Consecutive)
                     yield return new WaitForSeconds(config.spawnDelay);
