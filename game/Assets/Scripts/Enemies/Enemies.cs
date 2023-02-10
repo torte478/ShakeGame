@@ -1,96 +1,35 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
+﻿using Shake.Creatures;
 using UnityEngine;
 
 namespace Shake.Enemies
 {
     [RequireComponent(typeof(Factory))]
-    internal sealed class Enemies : MonoBehaviour
+    internal sealed class Enemies : Creatures<Enemy.Enemy>
     {
         private Factory _factory;
 
         private int _dead;
 
         [SerializeField]
-        private Area.Area area;
-
-        [SerializeField]
-        private Config config;
-
-        [SerializeField]
-        private LayerMask layer;
+        private Kind kind;
 
         void Awake()
         {
             _factory = GetComponent<Factory>();
         }
 
-        void Start()
+        protected override void ProcessDeath()
         {
-            Player.Player.Instance.Shot += CheckDamage;
-            
-            StartSpawn();
-        }
-
-        void OnDestroy()
-        {
-            Player.Player.Instance.Shot -= CheckDamage;
-        }
-
-        private void CheckDamage(Vector3 shot)
-        {
-            CheckShot(shot);
-            if (_dead >= config.count)
+            if (++_dead >= Config.count)
                 StartSpawn();
         }
 
-        private void StartSpawn()
+        protected override Enemy.Enemy SpawnCreature()
+            => _factory.Create(kind); 
+
+        protected override void PrepareSpawn()
         {
             _dead = 0;
-            StartCoroutine(SpawnEnemies());
-        }
-
-        private IEnumerator SpawnEnemies()
-        {
-            foreach (var _ in Enumerable.Range(0, config.count))
-            {
-                var enemy = _factory.Create(config.kind);
-                
-                var path = BuildPath();
-                var start = config.spawn switch
-                {
-                    Spawn.Consecutive => area.ToPoint(isSpawn: true, region: config.region),
-                    Spawn.Instant => path[0],
-                    
-                    _ => throw new Exception($"Unknown type {config.spawn}")
-                };
-                
-                enemy.Init(start, path);
-
-                if (config.spawn == Spawn.Consecutive)
-                    yield return new WaitForSeconds(config.spawnDelay);
-            }
-        }
-
-        private Vector3[] BuildPath()
-            => Enumerable
-               .Range(0, config.pathLength)
-               .Select(_ => area.ToPoint(region: config.region))
-               .ToArray();
-        
-        private void CheckShot(Vector3 shot)
-        {
-            var target = Physics2D.OverlapPoint(shot, layer);
-            if (target == null)
-                return;
-
-            if (!target.gameObject.TryGetComponent<Enemy.Enemy>(out var enemy))
-                return;
-            
-            var killed = enemy.Damage();
-            if (killed)
-                ++_dead;
         }
     }
 }

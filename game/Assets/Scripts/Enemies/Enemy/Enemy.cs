@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Shake.Creatures;
 using Shake.Enemies.Enemy.Attack;
 using Shake.Enemies.Enemy.Hp;
 using Shake.Utils;
@@ -10,7 +11,7 @@ namespace Shake.Enemies.Enemy
     [RequireComponent(typeof(IAttack))]
     [RequireComponent(typeof(IHp))]
     [RequireComponent(typeof(Movement))]
-    internal sealed class Enemy : MonoBehaviour
+    internal sealed class Enemy : MonoBehaviour, ICreature
     {
         private Transform _transform;
         private IHp _hp;

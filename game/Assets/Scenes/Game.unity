@@ -413,18 +413,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81469f038f842abbb746c53599cd80d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  area: {fileID: 2083458222}
+  layer:
+    serializedVersion: 2
+    m_Bits: 64
   config:
-    spawn: 1
-    kind: 4
+    spawn: 0
+    kind: 0
     region: 2
     count: 3
     pathLength: 2
     spawnDelay: 1
-  layer:
-    serializedVersion: 2
-    m_Bits: 64
-  player: {fileID: 2063299788}
+  area: {fileID: 2083458222}
+  kind: 0
 --- !u!4 &1655506522
 Transform:
   m_ObjectHideFlags: 0

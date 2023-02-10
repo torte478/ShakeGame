@@ -10,8 +10,6 @@ namespace Shake.Enemies
     {
         public Spawn spawn;
 
-        public Kind kind;
-
         public Region region;
 
         [Min(1)]
