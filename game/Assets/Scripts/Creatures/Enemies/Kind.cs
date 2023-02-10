@@ -1,4 +1,4 @@
-﻿namespace Shake.Enemies
+﻿namespace Shake.Creatures.Enemies
 {
     internal enum Kind
     {

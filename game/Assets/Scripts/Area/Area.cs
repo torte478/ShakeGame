@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Shake.Area
 {
+    // TODO: combine with Zones
     internal sealed class Area : MonoBehaviour
     {
         [SerializeField]

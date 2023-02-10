@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shake.Enemies.Enemy;
-using Shake.Enemies.Enemy.Hp;
+using Shake.Creatures.Components;
 using Shake.Utils;
 using UnityEngine;
 

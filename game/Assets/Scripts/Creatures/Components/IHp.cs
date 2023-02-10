@@ -1,4 +1,4 @@
-﻿namespace Shake.Enemies.Enemy.Hp
+﻿namespace Shake.Creatures.Components
 {
     internal interface IHp
     {

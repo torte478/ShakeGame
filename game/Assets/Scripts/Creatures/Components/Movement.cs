@@ -7,7 +7,7 @@ using DG.Tweening.Plugins.Options;
 using Shake.Utils;
 using UnityEngine;
 
-namespace Shake.Enemies.Enemy
+namespace Shake.Creatures.Components
 {
     internal sealed class Movement : MonoBehaviour
     {

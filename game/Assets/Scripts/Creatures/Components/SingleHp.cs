@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Shake.Enemies.Enemy.Hp
+namespace Shake.Creatures.Components
 {
     internal sealed class SingleHp : MonoBehaviour, IHp
     {

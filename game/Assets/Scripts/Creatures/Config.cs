@@ -3,7 +3,7 @@ using Shake.Area;
 using Shake.Utils;
 using UnityEngine;
 
-namespace Shake.Enemies
+namespace Shake.Creatures
 {
     [Serializable]
     internal sealed class Config

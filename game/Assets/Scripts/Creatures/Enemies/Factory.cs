@@ -4,7 +4,7 @@ using Shake.Utils;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Shake.Enemies
+namespace Shake.Creatures.Enemies
 {
     internal sealed class Factory : MonoBehaviour
     {
@@ -45,7 +45,7 @@ namespace Shake.Enemies
         private Kind GetRandomKind()
             => _factories
                .Keys.Count
-               ._(_ => Random.Range(0, _))
+               ._(_ => Random.Range((int)0, (int)_))
                ._(_factories.Keys.ElementAt);
     }
 }

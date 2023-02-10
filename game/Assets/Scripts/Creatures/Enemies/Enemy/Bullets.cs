@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Shake.Enemies.Enemy.Attack
+namespace Shake.Creatures.Enemies.Enemy
 {
     internal sealed class Bullets : MonoBehaviour
     {

@@ -1,7 +1,6 @@
-﻿using Shake.Creatures;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Shake.Enemies
+namespace Shake.Creatures.Enemies
 {
     internal sealed class Enemies : Creatures<Enemy.Enemy>
     {

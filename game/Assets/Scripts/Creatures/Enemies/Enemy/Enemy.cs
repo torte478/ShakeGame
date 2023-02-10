@@ -1,9 +1,7 @@
-﻿using Shake.Creatures;
-using Shake.Enemies.Enemy.Attack;
-using Shake.Utils;
+﻿using Shake.Utils;
 using UnityEngine;
 
-namespace Shake.Enemies.Enemy
+namespace Shake.Creatures.Enemies.Enemy
 {
     [RequireComponent(typeof(IAttack))]
     internal sealed class Enemy : Creature

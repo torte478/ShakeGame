@@ -2,7 +2,7 @@
 using Shake.Utils;
 using UnityEngine;
 
-namespace Shake.Enemies.Enemy.Attack
+namespace Shake.Creatures.Enemies.Enemy
 {
     internal sealed class MeleeAttack : BaseAttack
     {

@@ -429,10 +429,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   config:
-    spawn: 0
+    spawn: 1
     region: 2
-    count: 3
-    pathLength: 2
+    count: 5
+    pathLength: 4
     spawnDelay: 1
   area: {fileID: 2083458222}
   factory: {fileID: 1459644411}
@@ -659,13 +659,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   config:
-    spawn: 0
+    spawn: 1
     region: 2
     count: 3
     pathLength: 2
     spawnDelay: 1
   area: {fileID: 2083458222}
-  kind: 4
+  kind: 0
   factory: {fileID: 718593766}
 --- !u!4 &1655506522
 Transform:
