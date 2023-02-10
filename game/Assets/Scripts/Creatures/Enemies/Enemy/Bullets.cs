@@ -8,6 +8,7 @@ namespace Shake.Creatures.Enemies.Enemy
     {
         private ObjectPool<Bullet> _pool;
         private Transform _transform;
+        private int _layer;
         
         [SerializeField]
         private Bullet prefab;
@@ -22,6 +23,7 @@ namespace Shake.Creatures.Enemies.Enemy
             Instance = this;
             
             _transform = GetComponent<Transform>();
+            _layer = prefab.gameObject.layer;
 
             _pool = new ObjectPool<Bullet>(
                 createFunc: Create,
@@ -31,15 +33,39 @@ namespace Shake.Creatures.Enemies.Enemy
                 maxSize: 20);
         }
 
+        void Start()
+        {
+            Player.Player.Instance.Shot += CheckShot;
+        }
+
+        private void OnDestroy()
+        {
+            Player.Player.Instance.Shot -= CheckShot;
+        }
+
         public void Shot(Vector3 from, Vector3 to)
             => _pool.Get().Shot(from, to);
         
         private Bullet Create()
         {
             var bullet = Instantiate(prefab, _transform);
-            bullet.gameObject.layer = prefab.gameObject.layer;
+            bullet.gameObject.layer = _layer;
             bullet.Deadline += _pool.Release;
             return bullet;
+        }
+        
+        // TODO : to Vector2
+        private void CheckShot(Vector3 position)
+        {
+            // TODO : user layer
+            var target = Physics2D.OverlapPoint(position);
+            if (target == null)
+                return;
+
+            if (!target.gameObject.TryGetComponent<Bullet>(out var bullet))
+                return;
+            
+            bullet.Die();
         }
     }
 }

@@ -43,6 +43,11 @@ namespace Shake.Creatures.Enemies.Enemy
             StartCoroutine(WaitDeadline());
         }
 
+        public void Die()
+        {
+            Deadline.Call(this);
+        }
+
         private IEnumerator WaitDeadline()
         {
             yield return new WaitForSeconds(deadline);

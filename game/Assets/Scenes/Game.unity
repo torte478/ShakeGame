@@ -420,7 +420,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868798714}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fbe42a2bc9d4562a56580fa6fc00ce6, type: 3}
   m_Name: 
@@ -659,13 +659,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   config:
-    spawn: 1
+    spawn: 0
     region: 2
     count: 3
     pathLength: 2
     spawnDelay: 1
   area: {fileID: 2083458222}
-  kind: 0
+  kind: 4
   factory: {fileID: 718593766}
 --- !u!4 &1655506522
 Transform:
