@@ -36,7 +36,7 @@ namespace Shake.Player
 
         void OnCollisionEnter2D(Collision2D col)
         {
-            Debug.Log("GAME OVER!");
+            Debug.Log("Game Over! - Enemy");
         }
     }
 }
