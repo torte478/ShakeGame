@@ -19,7 +19,7 @@ namespace Shake.Area
                 size: new Vector3(area.size.x, area.size.y, Consts.Eps));
         }
 
-        public Vector3 ToPoint(bool isSpawn = false, Region region = Region.Any)
+        public Vector2 ToPoint( bool isSpawn = false, Region region = Region.Any)
         {
             var xRange = region switch
             {
@@ -33,7 +33,7 @@ namespace Shake.Area
                         ? spawnY
                         : Random.Range(area.yMin, area.yMax);
 
-            return new Vector3(x, y);
+            return new Vector2(x, y);
         }
     }
 }        

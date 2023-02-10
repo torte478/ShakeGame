@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Shake.Enemies;
+using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Creatures
@@ -9,6 +10,8 @@ namespace Shake.Creatures
     internal abstract class Creatures<T> : MonoBehaviour
         where T : Creature
     {
+        private float _depth;
+
         [SerializeField]
         private LayerMask layer;
         
@@ -19,6 +22,11 @@ namespace Shake.Creatures
         private Area.Area area;
 
         protected Config Config => config;
+
+        void Awake()
+        {
+            _depth = transform.position.z;
+        }
         
         void Start()
         {
@@ -70,9 +78,12 @@ namespace Shake.Creatures
                 var path = BuildPath();
                 var start = config.spawn switch
                 {
-                    Spawn.Consecutive => area.ToPoint(isSpawn: true, region: config.region),
+                    Spawn.Consecutive => area
+                                         .ToPoint(isSpawn: true, region: config.region)
+                                         .WithZ(_depth),
+
                     Spawn.Instant => path[0],
-                    
+
                     _ => throw new Exception($"Unknown type {config.spawn}")
                 };
                 
@@ -86,7 +97,7 @@ namespace Shake.Creatures
         private Vector3[] BuildPath()
             => Enumerable
                .Range(0, config.pathLength)
-               .Select(_ => area.ToPoint(region: config.region))
+               .Select(_ => area.ToPoint(region: config.region).WithZ(_depth))
                .ToArray();
     }
 }

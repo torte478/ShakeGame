@@ -38,7 +38,7 @@ namespace Shake.Creatures
         private Creature CreateCreature()
         {
             var creature = Instantiate(prefab, _transform);
-            creature.transform.position = new Vector3(Consts.Outside.x, Consts.Outside.y, prefab.transform.position.z);
+            creature.transform.position = Consts.Outside;
 
             var owner = creature.gameObject;
             owner.SetActive(false);
