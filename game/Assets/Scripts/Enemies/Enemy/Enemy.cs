@@ -1,5 +1,4 @@
-﻿using System;
-using Shake.Creatures;
+﻿using Shake.Creatures;
 using Shake.Enemies.Enemy.Attack;
 using Shake.Utils;
 using UnityEngine;
@@ -12,8 +11,6 @@ namespace Shake.Enemies.Enemy
         private Transform _transform;
         private IAttack _attack;
         private Vector3 _target;
-
-        public event Action<Enemy> Death;
 
         protected override void InnerAwake()
         {
@@ -39,7 +36,6 @@ namespace Shake.Enemies.Enemy
         {
             Movement.Pause();
             _transform.position = Consts.Outside;
-            Death.Call(this);
         }
 
         private void CheckStartAttack(int step)

@@ -3,20 +3,15 @@ using UnityEngine;
 
 namespace Shake.Enemies
 {
-    [RequireComponent(typeof(Factory))]
     internal sealed class Enemies : Creatures<Enemy.Enemy>
     {
-        private Factory _factory;
-
         private int _dead;
 
         [SerializeField]
         private Kind kind;
 
-        void Awake()
-        {
-            _factory = GetComponent<Factory>();
-        }
+        [SerializeField]
+        private Factory factory;
 
         protected override void ProcessDeath()
         {
@@ -25,7 +20,7 @@ namespace Shake.Enemies
         }
 
         protected override Enemy.Enemy SpawnCreature()
-            => _factory.Create(kind); 
+            => factory.Create(kind); 
 
         protected override void PrepareSpawn()
         {

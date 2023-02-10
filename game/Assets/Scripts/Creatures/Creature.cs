@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Shake.Enemies.Enemy;
 using Shake.Enemies.Enemy.Hp;
+using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Creatures
@@ -13,6 +15,8 @@ namespace Shake.Creatures
         private Movement _movement;
 
         protected Movement Movement => _movement;
+        
+        public event Action<Creature> Death;
 
         void Awake()
         {
@@ -42,8 +46,9 @@ namespace Shake.Creatures
         {
             if (!_hp.Damage())
                 return false;
-
+            
             InnerDeath();
+            Death.Call(this);
             return true;
         }
 
