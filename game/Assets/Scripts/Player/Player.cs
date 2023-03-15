@@ -12,6 +12,7 @@ namespace Shake.Player
         private Audio _audio;
 
         public event Action<Vector3> Shot;
+        public event Action Dead;
         
         public static Player Instance { get; private set; }
 
@@ -37,6 +38,7 @@ namespace Shake.Player
         void OnCollisionEnter2D(Collision2D col)
         {
             Debug.Log("Game Over! - Enemy");
+            Dead.Call();
         }
     }
 }

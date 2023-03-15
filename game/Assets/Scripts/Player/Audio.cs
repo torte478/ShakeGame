@@ -1,5 +1,4 @@
-﻿using Shake.Utils;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Shake.Player
 {
