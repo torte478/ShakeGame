@@ -15,24 +15,24 @@ namespace Shake.Creatures
 
         protected Movement Movement => _movement;
         
-        public event Action<Creature> Death;
+        public event Action<Creature> Dead;
 
         void Awake()
         {
             _hp = GetComponent<IHp>();
             _movement = GetComponent<Movement>();
             
-            InnerAwake();
+            AwakeInner();
         }
 
         void Start()
         {
-            InnerStart();
+            StartInner();
         }
 
         void OnDestroy()
         {
-            InnerDestroy();
+            DestroyInner();
         }
         
         public void Init(Vector3 position, IReadOnlyCollection<Vector3> path)
@@ -46,25 +46,30 @@ namespace Shake.Creatures
             if (!_hp.Damage())
                 return false;
             
-            InnerDeath();
-            Death.Call(this);
+            StartDeathInner();
             return true;
         }
 
-        protected virtual void InnerAwake()
+        protected virtual void AwakeInner()
         {
         }
 
-        protected virtual void InnerStart()
+        protected virtual void StartInner()
         {
         }
 
-        protected virtual void InnerDestroy()
+        protected virtual void DestroyInner()
         {
         }
 
-        protected virtual void InnerDeath()
+        protected virtual void StartDeathInner()
         {
+            OnDeathEnd();
+        }
+
+        protected virtual void OnDeathEnd()
+        {
+            Dead.Call(this);
         }
     }
 }

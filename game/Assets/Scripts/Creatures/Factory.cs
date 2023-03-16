@@ -21,7 +21,7 @@ namespace Shake.Creatures
                 createFunc: CreateCreature,
                 actionOnGet: e => e.gameObject.SetActive(true),
                 actionOnRelease: e => e.gameObject.SetActive(false),
-                actionOnDestroy: e => e.Death -= _pool.Release,
+                actionOnDestroy: e => e.Dead -= _pool.Release,
                 maxSize: 5);
         }
 
@@ -44,7 +44,7 @@ namespace Shake.Creatures
             owner.SetActive(false);
             owner.layer = prefab.gameObject.layer;
 
-            creature.Death += _pool.Release;
+            creature.Dead += _pool.Release;
             return creature;
         }
     }
