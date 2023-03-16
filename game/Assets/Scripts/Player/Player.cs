@@ -1,4 +1,5 @@
 ﻿using System;
+using Shake.Menu;
 using Shake.Utils;
 using UnityEngine;
 
@@ -29,6 +30,9 @@ namespace Shake.Player
         
         void Update()
         {
+            if (Pause.Instance.Paused)
+                return;
+            
             var shot = _gun.DoShot();
                 
             shot.To(_audio.Play);
