@@ -25,7 +25,7 @@ namespace Shake.Creatures.Components
             _transform = GetComponent<Transform>();
         }
 
-        public void Init(Vector3 start, IReadOnlyCollection<Vector3> path)
+        public void Init(Vector3 start, IReadOnlyCollection<Vector3> path, float delay)
         {
             _step = 0;
             transform.position = start;
@@ -36,7 +36,7 @@ namespace Shake.Creatures.Components
 
             var loop = DOTween.Sequence();
             foreach (var (from, to) in EnumerateCyclicPairs(path))
-                BuildStep(from, to)
+                BuildStep(from, to, delay)
                     .OnComplete(IncrementStepIndex)
                     ._(loop.Append);
             
@@ -51,9 +51,13 @@ namespace Shake.Creatures.Components
         public void Resume()
             => _movement.Play();
 
-        private TweenerCore<Vector3, Vector3, VectorOptions> BuildStep(Vector3 from, Vector3 to)
+        private TweenerCore<Vector3, Vector3, VectorOptions> BuildStep(
+            Vector3 from,
+            Vector3 to,
+            float delay = 0f)
             => _transform
                .DOTimingMove(from, to, speed)
+               .SetDelay(delay)
                .SetEase(Ease.Linear);
 
         private void IncrementStepIndex()

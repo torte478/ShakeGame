@@ -86,7 +86,7 @@ namespace Shake.Creatures
                     _ => throw new Exception($"Unknown type {config.spawn}")
                 };
                 
-                creature.Init(start, path);
+                creature.Init(start, path, config.stepDelay);
 
                 if (config.spawn == Spawn.Consecutive)
                     yield return new WaitForSeconds(config.spawnDelay);

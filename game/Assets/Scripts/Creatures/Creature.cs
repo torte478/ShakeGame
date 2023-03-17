@@ -35,9 +35,9 @@ namespace Shake.Creatures
             DestroyInner();
         }
         
-        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path)
+        public void Init(Vector3 position, IReadOnlyCollection<Vector3> path, float delay)
         {
-            _movement!.Init(position, path);
+            _movement!.Init(position, path, delay);
             _hp.Init();
         }
         

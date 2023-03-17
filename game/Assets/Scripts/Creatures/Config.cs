@@ -20,5 +20,8 @@ namespace Shake.Creatures
 
         [Min(Consts.Eps)]
         public float spawnDelay;
+
+        [Min(0f)]
+        public float stepDelay;
     }
 }

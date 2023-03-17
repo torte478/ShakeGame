@@ -626,6 +626,7 @@ MonoBehaviour:
     count: 5
     pathLength: 4
     spawnDelay: 1
+    stepDelay: 0
   area: {fileID: 2083458222}
   factory: {fileID: 1459644411}
 --- !u!4 &868798716
@@ -921,9 +922,10 @@ MonoBehaviour:
   config:
     spawn: 0
     region: 2
-    count: 1
-    pathLength: 2
+    count: 3
+    pathLength: 4
     spawnDelay: 1
+    stepDelay: 1
   area: {fileID: 2083458222}
   kind: 4
   factory: {fileID: 718593766}
