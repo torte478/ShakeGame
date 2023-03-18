@@ -5,6 +5,6 @@ namespace Shake.Utils
     internal static class Consts
     {
         public const float Eps = 0.01f;
-        public static Vector3 Outside => new(-100, -100);
+        public static Vector3 Outside => new(0, -10);
     }
 }
