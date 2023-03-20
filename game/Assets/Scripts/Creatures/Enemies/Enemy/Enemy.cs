@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Shake.Creatures.Enemies.Enemy
 {
+    // TODO: refactor require
     [RequireComponent(typeof(IAttack))]
     internal sealed class Enemy : Creature
     {

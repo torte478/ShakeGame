@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Shake.Creatures
 {
+    // TODO: refactor require
     [RequireComponent(typeof(Hp))]
     [RequireComponent(typeof(Movement))]
     internal abstract class Creature : MonoBehaviour
