@@ -12,7 +12,10 @@ namespace Shake.Creatures.Enemies.Enemy
         
         [SerializeField]
         private Bullet prefab;
-        
+
+        [SerializeField]
+        private LayerMask player;
+
         public static Bullets Instance { get; private set; }
 
         void Awake()
@@ -54,10 +57,9 @@ namespace Shake.Creatures.Enemies.Enemy
             return bullet;
         }
         
-        private static void CheckShot(Vector2 position)
+        private void CheckShot(Vector2 position)
         {
-            // TODO : user layer
-            var target = Physics2D.OverlapPoint(position);
+            var target = Physics2D.OverlapPoint(position, player);
             if (target == null)
                 return;
 

@@ -760,6 +760,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 8942716360120611358, guid: 06739f06dccf06d4f9e145858692b527, type: 3}
+  player:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!4 &847184980
 Transform:
   m_ObjectHideFlags: 0
