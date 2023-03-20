@@ -10,7 +10,7 @@ namespace Shake.Creatures.Components
     [RequireComponent(typeof(NavMeshAgent))]
     internal sealed class Movement : MonoBehaviour
     {
-        private readonly Memorable<State> _state = new(State.Begin);
+        private State _state = State.Begin;
         
         private Transform _transform;
         
@@ -39,7 +39,7 @@ namespace Shake.Creatures.Components
 
         void Update()
         {
-            if (_state.Current != State.Move)
+            if (_state != State.Move)
                 return;
 
             if (Vector2.Distance(_transform.position, _path.Current) > Consts.Eps)
@@ -50,17 +50,17 @@ namespace Shake.Creatures.Components
                         : _step + 1;
             Step.Call(_step);
             
-            _state.Current = State.Wait;
+            _state = State.Wait;
             StartCoroutine(NextStep());
         }
 
         private IEnumerator NextStep()
         {
             yield return new WaitForSeconds(_delay);
-            
+
             _path.MoveNext();
             _navigation.SetDestination(_path.Current);
-            _state.Current = State.Move;
+            _state = State.Move;
         }
 
         public void Init(Vector3 start, IReadOnlyCollection<Vector3> path, float delay)
@@ -74,18 +74,18 @@ namespace Shake.Creatures.Components
             _navigation.enabled = true;
             _navigation.Warp(start);
             _navigation.SetDestination(_path.Current);
-            _state.Current = State.Move;
+            _state = State.Move;
         }
 
         public void Pause()
         {
-            _state.Current = State.Pause;
+            _state = State.Pause;
             _navigation.isStopped = true;
         }
 
         public void Resume()
         {
-            _state.Current = _state.Previous;
+            _state = State.Move;
             _navigation.isStopped = false;
         }
 
