@@ -1,5 +1,4 @@
 ﻿using System;
-using Shake.Area;
 using Shake.Utils;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace Shake.Creatures
     {
         public Spawn spawn;
 
-        public Region region;
+        public Zone zone;
 
         [Min(1)]
         public int count;
@@ -23,5 +22,12 @@ namespace Shake.Creatures
 
         [Min(0f)]
         public float stepDelay;
+
+        public enum Zone
+        {
+            Left,
+            Right,
+            All
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace Shake.Player
             _input.performed += DoShot;
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
             _input.Disable();
             _input.performed -= DoShot;

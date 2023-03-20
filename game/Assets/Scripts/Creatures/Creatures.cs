@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Shake.Utils;
+using Shake.Zones;
 using UnityEngine;
 
 namespace Shake.Creatures
@@ -18,7 +19,7 @@ namespace Shake.Creatures
         private Config config;
         
         [SerializeField]
-        private Area.Area area;
+        private Zones.Zones zones;
 
         protected Config Config => config;
 
@@ -77,8 +78,8 @@ namespace Shake.Creatures
                 var path = BuildPath();
                 var start = config.spawn switch
                 {
-                    Spawn.Consecutive => area
-                                         .ToPoint(isSpawn: true, region: config.region)
+                    Spawn.Consecutive => zones
+                                         .ToPoint(isSpawn: true, zone: Convert(config.zone))
                                          .WithZ(_depth),
 
                     Spawn.Instant => path[0],
@@ -96,7 +97,17 @@ namespace Shake.Creatures
         private Vector3[] BuildPath()
             => Enumerable
                .Range(0, config.pathLength)
-               .Select(_ => area.ToPoint(region: config.region).WithZ(_depth))
+               .Select(_ => zones.ToPoint(zone: Convert(config.zone)).WithZ(_depth))
                .ToArray();
+
+        private static Zone Convert(Config.Zone zone)
+            => zone switch
+            {
+                Config.Zone.Left => Zone.LeftHalf,
+                Config.Zone.Right => Zone.RightHalf,
+                Config.Zone.All => Zone.All,
+
+                _ => throw new Exception("Can't convert Zone: {zone}")
+            };
     }
 }
