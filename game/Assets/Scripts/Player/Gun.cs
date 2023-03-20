@@ -13,7 +13,7 @@ namespace Shake.Player
         private InputAction _input;
         
         private bool _isLeft = true;
-        private Func<Vector3, Zone, Shot> _shot;
+        private Func<Vector2, Zone, Shot> _shot;
 
         [SerializeField]
         private Zones.Zones zones;
@@ -52,14 +52,14 @@ namespace Shake.Player
             if (Pause.Instance.Paused)
                 return;
             
-            var cursor = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            var cursor = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue().WithZ());
             var zone = zones.ToZone(cursor);
-            var shot = _shot(cursor, zone);
+            var shot = _shot(new Vector2(cursor.x, cursor.y), zone);
 
             Fire.Call(shot);
         }
 
-        private Shot DoFirstShot(Vector3 cursor, Zone zone)
+        private Shot DoFirstShot(Vector2 cursor, Zone zone)
         {
             var isLeft = zone is Zone.Left or Zone.Center;
             var shot = Shot.Create(cursor, isLeft);
@@ -70,7 +70,7 @@ namespace Shake.Player
             return shot;
         }
 
-        private Shot DoShot(Vector3 cursor, Zone zone)
+        private Shot DoShot(Vector2 cursor, Zone zone)
         {
             var isShot = (zone == Zone.Center)
                          || (zone == Zone.Left && _isLeft) 

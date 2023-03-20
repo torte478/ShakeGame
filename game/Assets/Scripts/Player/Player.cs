@@ -11,7 +11,7 @@ namespace Shake.Player
         private Gun _gun;
         private Audio _audio;
 
-        public event Action<Vector3> Shot;
+        public event Action<Vector2> Shot;
         public event Action Dead;
         
         public static Player Instance { get; private set; }

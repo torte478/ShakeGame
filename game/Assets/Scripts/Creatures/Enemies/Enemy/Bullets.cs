@@ -54,8 +54,7 @@ namespace Shake.Creatures.Enemies.Enemy
             return bullet;
         }
         
-        // TODO : to Vector2
-        private void CheckShot(Vector3 position)
+        private static void CheckShot(Vector2 position)
         {
             // TODO : user layer
             var target = Physics2D.OverlapPoint(position);

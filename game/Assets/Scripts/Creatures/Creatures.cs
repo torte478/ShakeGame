@@ -49,14 +49,14 @@ namespace Shake.Creatures
             StartCoroutine(SpawnCreatures());
         }
         
-        private void CheckDamage(Vector3 shot)
+        private void CheckDamage(Vector2 shot)
         {
             var isDeath = CheckShot(shot);
             if (isDeath)
                 ProcessDeath();
         }
         
-        private bool CheckShot(Vector3 shot)
+        private bool CheckShot(Vector2 shot)
         {
             var target = Physics2D.OverlapPoint(shot, layer);
             if (target == null)

@@ -5,10 +5,10 @@ namespace Shake.Player
 {
     internal sealed class Shot
     {
-        public Maybe<Vector3> Point { get; }
+        public Maybe<Vector2> Point { get; }
         public Maybe<bool> Left { get; }
 
-        private Shot(Vector3 point, bool left)
+        private Shot(Vector2 point, bool left)
         {
             Point = Maybe.Some(point);
             Left = Maybe.Some(left);
@@ -16,12 +16,12 @@ namespace Shake.Player
         
         private Shot()
         {
-            Point = Maybe.None<Vector3>();
+            Point = Maybe.None<Vector2>();
             Left = Maybe.None<bool>();
         }
 
         public static Shot Misfire() => new();
-        public static Shot Create(Vector3 point, bool left) => new(point, left);
+        public static Shot Create(Vector2 point, bool left) => new(point, left);
 
         public override string ToString()
             => Point.To(
