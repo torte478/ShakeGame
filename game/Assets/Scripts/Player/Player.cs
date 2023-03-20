@@ -1,5 +1,4 @@
 ﻿using System;
-using Shake.Menu;
 using Shake.Utils;
 using UnityEngine;
 
@@ -27,22 +26,28 @@ namespace Shake.Player
 
             Instance = this;
         }
-        
-        void Update()
+
+        void Start()
         {
-            if (Pause.Instance.Paused)
-                return;
-            
-            var shot = _gun.DoShot();
-                
-            shot.To(_audio.Play);
-            shot.To(_ => _.Point.To(Shot.Call));
+            _gun.Fire += OnFire;
         }
 
+        void OnDestroy()
+        {
+            _gun.Fire -= OnFire;
+        }
+        
+        // ReSharper disable once UnusedParameter.Local
         void OnCollisionEnter2D(Collision2D col)
         {
             Debug.Log("Game Over! - Enemy");
             Dead.Call();
+        }
+        
+        private void OnFire(Shot shot)
+        {
+            _audio.Play(shot);
+            shot.Point.To(Shot.Call);
         }
     }
 }

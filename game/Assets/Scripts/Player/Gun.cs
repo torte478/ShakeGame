@@ -1,13 +1,16 @@
 ﻿using System;
+using Shake.Menu;
 using Shake.Utils;
 using Shake.Zones;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Shake.Player
 {
     internal sealed class Gun : MonoBehaviour
     {
         private Camera _camera;
+        private InputAction _input;
         
         private bool _isLeft = true;
         private Func<Vector3, Zone, Shot> _shot;
@@ -15,9 +18,16 @@ namespace Shake.Player
         [SerializeField]
         private Zones.Zones zones;
 
+        public event Action<Shot> Fire;
+
         public Gun()
         {
             _shot = DoFirstShot;
+        }
+
+        void Awake()
+        {
+            _input = new Controls().Player.Shot;
         }
 
         void Start()
@@ -25,16 +35,28 @@ namespace Shake.Player
             _camera = Camera.main;
         }
 
-        public Maybe<Shot> DoShot()
+        void OnEnable()
         {
-            if (!Input.GetMouseButtonDown(0))
-                return Maybe.None<Shot>();
+            _input.Enable();
+            _input.performed += DoShot;
+        }
 
-            var cursor = _camera.ScreenToWorldPoint(Input.mousePosition);
+        private void OnDisable()
+        {
+            _input.Disable();
+            _input.performed -= DoShot;
+        }
+
+        private void DoShot(InputAction.CallbackContext context)
+        {
+            if (Pause.Instance.Paused)
+                return;
+            
+            var cursor = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             var zone = zones.ToZone(cursor);
-
             var shot = _shot(cursor, zone);
-            return Maybe.Some(shot);
+
+            Fire.Call(shot);
         }
 
         private Shot DoFirstShot(Vector3 cursor, Zone zone)
