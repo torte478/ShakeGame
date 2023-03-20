@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shake.Creatures.Components;
 using Shake.Utils;
 using UnityEngine;
 
 namespace Shake.Creatures
 {
-    [RequireComponent(typeof(IHp))]
+    [RequireComponent(typeof(Hp))]
     [RequireComponent(typeof(Movement))]
     internal abstract class Creature : MonoBehaviour
     {
-        private IHp _hp;
+        private Hp _hp;
         private Movement _movement;
 
         protected Movement Movement => _movement;
@@ -19,7 +18,7 @@ namespace Shake.Creatures
 
         void Awake()
         {
-            _hp = GetComponent<IHp>();
+            _hp = GetComponent<Hp>();
             _movement = GetComponent<Movement>();
             
             AwakeInner();

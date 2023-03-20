@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Shake.Creatures.Components
+namespace Shake.Creatures
 {
-    internal sealed class AmountHp : MonoBehaviour, IHp
+    internal sealed class Hp : MonoBehaviour
     {
         private int _hp;
 

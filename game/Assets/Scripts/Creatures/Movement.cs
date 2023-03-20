@@ -5,7 +5,7 @@ using Shake.Utils;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Shake.Creatures.Components
+namespace Shake.Creatures
 {
     [RequireComponent(typeof(NavMeshAgent))]
     internal sealed class Movement : MonoBehaviour
